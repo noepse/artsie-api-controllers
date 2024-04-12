@@ -20,7 +20,7 @@ app.UseSwaggerUI(c =>
 app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/art/{id}", (int id) => ArtDB.GetArtById(id));
-app.MapGet("/comments", () => CommentsDB.GetComments());
+app.MapGet("/art/{id}/comments", (int id) => CommentsDB.GetCommentsByArtId(id));
 app.MapPost("/comments", (Comment comment) => CommentsDB.CreateComment(comment));
 app.MapPut("/comments", (Comment comment) => CommentsDB.UpdateComment(comment));
 app.MapDelete("/comments/{id}", (int id) => CommentsDB.RemoveComment(id));

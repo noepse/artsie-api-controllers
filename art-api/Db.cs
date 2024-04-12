@@ -44,9 +44,9 @@ public class CommentsDB
    };
 
 
-    public static List<Comment> GetComments()
+    public static List<Comment>? GetCommentsByArtId(int id)
     {
-        return _comments;
+        return _comments.FindAll(comment => comment.ArtId == id).ToList();
     }
 
     public static Comment CreateComment(Comment comment)
@@ -61,7 +61,7 @@ public class CommentsDB
         {
             if (comment.Id == update.Id)
             {
-                comment.Author = update.Author;
+                comment.Likes += update.Likes;
             }
             return comment;
         }).ToList();
