@@ -1,4 +1,7 @@
 namespace Artsie.DB;
+using System.Net;
+using System.Web;
+using Microsoft.AspNetCore.Mvc;
 
 public record Art
 {
@@ -20,7 +23,8 @@ public class ArtDB
 
     public static Art? GetArtById(int id)
     {
-        return _art.SingleOrDefault(art => art.Id == id);
+        var art = _art.SingleOrDefault(art => art.Id == id);
+        return art;
     }
 }
 
