@@ -524,3 +524,4 @@
 /Users/simmi/repos/personal/artsie-api/art-api.Tests/obj/Debug/net8.0/art-api..55B3CC67.Up2Date
 /Users/simmi/repos/personal/artsie-api/art-api.Tests/obj/Debug/net8.0/art-api.Tests.genruntimeconfig.cache
 /Users/simmi/repos/personal/artsie-api/art-api.Tests/obj/Debug/net8.0/ref/art-api.Tests.dll
+/Users/simmi/repos/personal/artsie-api/art-api.Tests/obj/Debug/net8.0/art-api.Tests.sourcelink.json
