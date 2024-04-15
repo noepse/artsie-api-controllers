@@ -23,7 +23,7 @@ public class HelloWorldTest
 public class ArtEndpoint
 {
   [Fact (DisplayName = "200: GET /art/{id}")]
-  public async Task TestArtById()
+  public async Task GetArtById_200()
   {
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
@@ -41,5 +41,27 @@ public class ArtEndpoint
 
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     Assert.Equivalent(expectedContent, content);
+  }
+   [Fact (DisplayName = "400: GET /art/{id}")]
+
+     public async Task GetArtById_400()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    var response = await client.GetAsync("/art/notanid");
+
+    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+  }
+
+   [Fact (DisplayName = "404: GET /art/{id}")]
+  public async Task GetArtById_404()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    var response = await client.GetAsync("/art/999999");
+
+    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }
 }

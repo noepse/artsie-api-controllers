@@ -23,8 +23,8 @@ public class ArtDB
 
     public static Art? GetArtById(int id)
     {
-        var art = _art.SingleOrDefault(art => art.Id == id);
-        return art;
+    var art = _art.SingleOrDefault(art => art.Id == id);
+    return art;
     }
 }
 

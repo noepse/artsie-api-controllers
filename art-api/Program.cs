@@ -19,7 +19,20 @@ app.UseSwaggerUI(c =>
     
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/art/{id}", (int id) => ArtDB.GetArtById(id));
+app.MapGet("/art/{id}", (int id) =>
+{
+    var art = ArtDB.GetArtById(id);
+    if (art == null)
+    {
+        // Return 404 response if art is not found
+        return Results.NotFound("Art not found.");
+    }
+    else
+    {
+        // Return the art object
+        return Results.Ok(art);
+    }
+});
 app.MapGet("/art/{id}/comments", (int id) => CommentsDB.GetCommentsByArtId(id));
 app.MapPost("/comments", (Comment comment) => CommentsDB.CreateComment(comment));
 app.MapPut("/comments", (Comment comment) => CommentsDB.UpdateComment(comment));
