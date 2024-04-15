@@ -13,9 +13,11 @@ public class HelloWorldTest
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
 
-    var response = await client.GetStringAsync("/");
+    var response = await client.GetAsync("/");
+    var content = await response.Content.ReadAsStringAsync();
 
-    Assert.Equal("Hello World!", response);
+    Assert.Equal("Hello World!", content);
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
   }
 }
 public class ArtEndpoint
@@ -26,16 +28,18 @@ public class ArtEndpoint
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
 
-    var response = JsonConvert.DeserializeObject<Art>(await client.GetStringAsync("/art/1"));
-    var rawResponse = await client.GetStringAsync("/art/1");
-    var expectedResponse = new Art
+    var response = await client.GetAsync("/art/1");
+    var content = JsonConvert.DeserializeObject<Art>(await response.Content.ReadAsStringAsync());
+
+    var expectedContent = new Art
     {
       Id = 1,
       Name = "Cleopatra decorating the Tomb of Mark Anthony",
       Artist = "Angelica Kauffman",
       Description = "The scene portrays Cleopatra in a moment of mourning and love, as she decorates the tomb of Mark Antony, her lover and ally, who had committed suicide after being defeated by Octavian (later Emperor Augustus) in the Battle of Actium in 31 BC. Cleopatra, with a look of sorrow and determination, is shown placing a wreath on Antony's tomb, surrounded by mourners and attendants.",
     };
-Console.Write(HttpStatusCode.OK);
-    Assert.Equivalent(expectedResponse, response);
+
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    Assert.Equivalent(expectedContent, content);
   }
 }
