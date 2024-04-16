@@ -37,6 +37,19 @@ app.MapGet("/art/{id}/comments", (int id) => CommentsDB.GetCommentsByArtId(id));
 app.MapPost("/comments", (Comment comment) => CommentsDB.CreateComment(comment));
 app.MapPut("/comments", (Comment comment) => CommentsDB.UpdateComment(comment));
 app.MapDelete("/comments/{id}", (int id) => CommentsDB.RemoveComment(id));
+app.MapGet("/users/{id}", (int id) => {
+    var user = UsersDB.GetUserById(id);
+    if (user == null)
+    {
+        // Return 404 response if art is not found
+        return Results.NotFound("User not found.");
+    }
+    else
+    {
+        // Return the art object
+        return Results.Ok(user);
+    }
+});
     
 app.Run();
 

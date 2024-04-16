@@ -85,11 +85,17 @@ public record User
 
 }
 
-public class UserDB
+public class UsersDB
 {
 
     private static List<User> _users = new List<User>()
    {
      new User{ Id=1, Username="froggie"},
    };
+
+       public static User? GetUserById(int id)
+    {
+    var user = _users.SingleOrDefault(user => user.Id == id);
+    return user;
+    }
 }
