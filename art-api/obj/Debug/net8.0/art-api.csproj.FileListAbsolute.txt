@@ -64,3 +64,4 @@
 /Users/simmi/repos/personal/artsie-api/art-api/obj/Debug/net8.0/art-api.pdb
 /Users/simmi/repos/personal/artsie-api/art-api/obj/Debug/net8.0/art-api.genruntimeconfig.cache
 /Users/simmi/repos/personal/artsie-api/art-api/obj/Debug/net8.0/ref/art-api.dll
+/Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll

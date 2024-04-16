@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "3O2c1JLvZ9LPRbbJA2mlM/th+2Q2PKMD++oRpWmC8hpWtqvRagJo7ZAdIX0srlyOXmPF3QycchQ05HlhgSLDmg==",
+  "dgSpecHash": "SD7l8M6HnJXsr0Mec7WETcrZ6kOSjfqZAaEcOxJ1aJCOB4F5HY7GU1W4q1o/q9cOWs9++GlC+OvRFEhSwmVmtg==",
   "success": true,
   "projectFilePath": "/Users/simmi/repos/personal/artsie-api/art-api/art-api.csproj",
   "expectedPackageFiles": [
+    "/Users/simmi/.nuget/packages/microsoft.aspnetcore.openapi/8.0.4/microsoft.aspnetcore.openapi.8.0.4.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
-    "/Users/simmi/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/simmi/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
     "/Users/simmi/.nuget/packages/swashbuckle.aspnetcore/6.5.0/swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
     "/Users/simmi/.nuget/packages/swashbuckle.aspnetcore.swagger/6.5.0/swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
     "/Users/simmi/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.5.0/swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
