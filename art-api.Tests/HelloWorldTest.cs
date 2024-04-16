@@ -65,3 +65,47 @@ public class ArtEndpoint
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }
 }
+
+public class UsersEndpoint
+{
+  [Fact (DisplayName = "200: GET /users/{id}")]
+  public async Task GetUserById_200()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    var response = await client.GetAsync("/users/1");
+    var content = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+
+    var expectedContent = new User
+    {
+      Id = 1,
+      Username = "froggie",
+    };
+
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    Assert.Equivalent(expectedContent, content);
+  }
+   [Fact (DisplayName = "400: GET /users/{id}")]
+
+     public async Task GetUserById_400()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    var response = await client.GetAsync("/users/notanid");
+
+    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+  }
+
+   [Fact (DisplayName = "404: GET /users/{id}")]
+  public async Task GetArtById_404()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    var response = await client.GetAsync("/art/999999");
+
+    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+  }
+}
