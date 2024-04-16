@@ -23,8 +23,8 @@ public class ArtDB
 
     public static Art? GetArtById(int id)
     {
-    var art = _art.SingleOrDefault(art => art.Id == id);
-    return art;
+        var art = _art.SingleOrDefault(art => art.Id == id);
+        return art;
     }
 }
 
@@ -50,7 +50,13 @@ public class CommentsDB
 
     public static List<Comment>? GetCommentsByArtId(int id)
     {
-        return _comments.FindAll(comment => comment.ArtId == id).ToList();
+        var art = ArtDB.GetArtById(id);
+        if (art != null)
+        {
+            return _comments.FindAll(comment => comment.ArtId == id).ToList();
+        }
+        else return null;
+
     }
 
     public static Comment CreateComment(Comment comment)
@@ -93,9 +99,9 @@ public class UsersDB
      new User{ Id=1, Username="froggie"},
    };
 
-       public static User? GetUserById(int id)
+    public static User? GetUserById(int id)
     {
-    var user = _users.SingleOrDefault(user => user.Id == id);
-    return user;
+        var user = _users.SingleOrDefault(user => user.Id == id);
+        return user;
     }
 }

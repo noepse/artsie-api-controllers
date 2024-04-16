@@ -22,7 +22,7 @@ public class HelloWorldTest
 }
 public class ArtEndpoint
 {
-  [Fact (DisplayName = "200: GET /art/{id}")]
+  [Fact(DisplayName = "200: GET /art/{id}")]
   public async Task GetArtById_200()
   {
     await using var application = new WebApplicationFactory<Program>();
@@ -42,9 +42,9 @@ public class ArtEndpoint
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     Assert.Equivalent(expectedContent, content);
   }
-   [Fact (DisplayName = "400: GET /art/{id}")]
+  [Fact(DisplayName = "400: GET /art/{id}")]
 
-     public async Task GetArtById_400()
+  public async Task GetArtById_400()
   {
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
@@ -54,7 +54,7 @@ public class ArtEndpoint
     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
   }
 
-   [Fact (DisplayName = "404: GET /art/{id}")]
+  [Fact(DisplayName = "404: GET /art/{id}")]
   public async Task GetArtById_404()
   {
     await using var application = new WebApplicationFactory<Program>();
@@ -64,11 +64,46 @@ public class ArtEndpoint
 
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }
+  [Fact(DisplayName = "200: GET /art/{id}/comments")]
+  public async Task GetCommentsByArtId_200()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    var response = await client.GetAsync("/art/1/comments");
+    List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await response.Content.ReadAsStringAsync());
+
+    var expectedContent = new[]{
+      new Comment{ Id=1, ArtId=1, Author="froggie", Body="Nice art!" }};
+
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    Assert.Equivalent(expectedContent, content);
+  }
+  [Fact(DisplayName = "400: GET /art/{id}/comments")]
+  public async Task GetCommentsByArtId_400()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    var response = await client.GetAsync("/art/notanid/comments");
+
+    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+  }
+  [Fact(DisplayName = "404: GET /art/{id}/comments")]
+  public async Task GetCommentsByArtId_404()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    var response = await client.GetAsync("/art/999999/comments");
+
+    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+  }
 }
 
 public class UsersEndpoint
 {
-  [Fact (DisplayName = "200: GET /users/{id}")]
+  [Fact(DisplayName = "200: GET /users/{id}")]
   public async Task GetUserById_200()
   {
     await using var application = new WebApplicationFactory<Program>();
@@ -86,9 +121,9 @@ public class UsersEndpoint
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     Assert.Equivalent(expectedContent, content);
   }
-   [Fact (DisplayName = "400: GET /users/{id}")]
+  [Fact(DisplayName = "400: GET /users/{id}")]
 
-     public async Task GetUserById_400()
+  public async Task GetUserById_400()
   {
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
@@ -98,7 +133,7 @@ public class UsersEndpoint
     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
   }
 
-   [Fact (DisplayName = "404: GET /users/{id}")]
+  [Fact(DisplayName = "404: GET /users/{id}")]
   public async Task GetArtById_404()
   {
     await using var application = new WebApplicationFactory<Program>();
@@ -109,3 +144,4 @@ public class UsersEndpoint
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }
 }
+
