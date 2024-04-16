@@ -2,21 +2,21 @@ using Microsoft.OpenApi.Models;
 using Artsie.DB;
 
 var builder = WebApplication.CreateBuilder(args);
-    
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Art API", Description = "Browse some beautiful art", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Art API", Description = "Browse some beautiful art", Version = "v1" });
 });
-    
+
 var app = builder.Build();
-    
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-   c.SwaggerEndpoint("/swagger/v1/swagger.json", "Art API V1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Art API V1");
 });
-    
+
 app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/art/{id}", (int id) =>
@@ -33,24 +33,38 @@ app.MapGet("/art/{id}", (int id) =>
         return Results.Ok(art);
     }
 });
-app.MapGet("/art/{id}/comments", (int id) => CommentsDB.GetCommentsByArtId(id));
+app.MapGet("/art/{id}/comments", (int id) =>
+{
+    var comments = CommentsDB.GetCommentsByArtId(id);
+    if (comments == null)
+    {
+        // Return 404 response if art is not found
+        return Results.NotFound("Art not found.");
+    }
+    else
+    {
+        // Return the comment array
+        return Results.Ok(comments);
+    }
+});
 app.MapPost("/comments", (Comment comment) => CommentsDB.CreateComment(comment));
 app.MapPut("/comments", (Comment comment) => CommentsDB.UpdateComment(comment));
 app.MapDelete("/comments/{id}", (int id) => CommentsDB.RemoveComment(id));
-app.MapGet("/users/{id}", (int id) => {
+app.MapGet("/users/{id}", (int id) =>
+{
     var user = UsersDB.GetUserById(id);
     if (user == null)
     {
-        // Return 404 response if art is not found
+        // Return 404 response if user is not found
         return Results.NotFound("User not found.");
     }
     else
     {
-        // Return the art object
+        // Return the user object
         return Results.Ok(user);
     }
 });
-    
+
 app.Run();
 
 public partial class Program { }
