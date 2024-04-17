@@ -41,7 +41,7 @@ app.MapGet("/art/{id}", (int id) =>
     }
 }).WithOpenApi(operation =>
     {
-        operation.Summary = "Returns art data for given ID";
+        operation.Summary = "Returns art data for given Art ID";
         operation.Description = "Returns an object containing the name, artist, description and image url of the requested art.";
         operation.Parameters[0].Description = "An integer that references the Art ID of the requested art";
         return operation;
@@ -63,7 +63,16 @@ app.MapGet("/art/{id}/comments", (int id) =>
         // Return the comment array
         return Results.Ok(comments);
     }
-});
+}).WithOpenApi(operation =>
+    {
+        operation.Summary = "Returns comments for given Art ID";
+        operation.Description = "Returns an array of comment objects associated with the requested Art ID. Returns an empty array if there are no comments associated with the requested Art ID..";
+        operation.Parameters[0].Description = "An integer that references the Art ID associated with the requested comments";
+        return operation;
+
+    }).Produces<List<Comment>>(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status400BadRequest)
+    .Produces(StatusCodes.Status404NotFound);;
 app.MapPost("/comments", (Comment comment) => CommentsDB.CreateComment(comment));
 app.MapPut("/comments", (Comment comment) => CommentsDB.UpdateComment(comment));
 app.MapDelete("/comments/{id}", (int id) => CommentsDB.RemoveComment(id));
@@ -82,7 +91,7 @@ app.MapGet("/users/{id}", (int id) =>
     }
 }).WithOpenApi(operation =>
     {
-        operation.Summary = "Returns user data for given ID";
+        operation.Summary = "Returns user data for given User ID";
         operation.Description = "Returns an object containing the username of the requested user.";
         operation.Parameters[0].Description = "An integer that references the User ID of the requested user";
         return operation;
