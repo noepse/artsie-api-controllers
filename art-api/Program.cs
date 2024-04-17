@@ -66,7 +66,7 @@ app.MapGet("/art/{id}/comments", (int id) =>
 }).WithOpenApi(operation =>
     {
         operation.Summary = "Returns comments for given Art ID";
-        operation.Description = "Returns an array of comment objects associated with the requested Art ID. Returns an empty array if there are no comments associated with the requested Art ID..";
+        operation.Description = "Returns an array of comment objects associated with the requested Art ID. Returns an empty array if there are no comments associated with the requested Art ID.";
         operation.Parameters[0].Description = "An integer that references the Art ID associated with the requested comments";
         return operation;
 
@@ -74,7 +74,26 @@ app.MapGet("/art/{id}/comments", (int id) =>
     .Produces(StatusCodes.Status400BadRequest)
     .Produces(StatusCodes.Status404NotFound);;
 app.MapPost("/comments", (Comment comment) => CommentsDB.CreateComment(comment));
-app.MapPut("/comments", (Comment comment) => CommentsDB.UpdateComment(comment));
+app.MapPut("/comments", (Comment update) => {
+    var response = CommentsDB.UpdateCommentLikes(update);
+    if (response == null)
+    {
+        // Return 404 response if comment is not found
+        return Results.NotFound("Comment not found.");
+    }
+    else
+    {
+        // Return successful 201 response
+        return Results.Created();
+    }}).WithOpenApi(operation =>
+    {
+        operation.Summary = "Updates likes for given comment object";
+        operation.Description = "Returns the updated comment object.";
+        return operation;
+
+    }).Accepts<Comment>("application/json")
+    .Produces<Comment>(StatusCodes.Status201Created)
+    .Produces(StatusCodes.Status404NotFound);;
 app.MapDelete("/comments/{id}", (int id) => {
     var response = CommentsDB.RemoveComment(id);
     if (response == null)
