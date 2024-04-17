@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Text;
 
-public class HelloWorldTest
+public class Root
 {
-  [Fact]
+  [Fact(DisplayName= "200: GET /")]
   public async Task TestRootEndpoint()
   {
     await using var application = new WebApplicationFactory<Program>();
@@ -19,6 +19,16 @@ public class HelloWorldTest
 
     Assert.Equal("Hello World!", content);
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+  }
+[Fact(DisplayName = "404: GET /{*unknown}")]
+  public async Task GetUnknownEndpoints_404()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    var response = await client.GetAsync("/unknown");
+
+    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }
 }
 public class ArtEndpoint
@@ -211,8 +221,6 @@ public class CommentsEndpoint
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }
 }
-
-
 
 public class UsersEndpoint
 {

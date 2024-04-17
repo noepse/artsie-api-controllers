@@ -143,6 +143,15 @@ app.MapGet("/users/{id}", (int id) =>
     .Produces(StatusCodes.Status400BadRequest)
     .Produces(StatusCodes.Status404NotFound);
 
+app.MapGet("/{*unknown}", (string unknown) => Results.NotFound("Page not found.")).WithOpenApi(operation =>
+    {
+        operation.Summary = "Returns 404 for unknown endpoints";
+        operation.Description = "Returns 404 Not Found for all unknown endpoints.";
+        operation.Parameters[0].Description = "Any unknown path";
+        return operation;
+
+    }).Produces(StatusCodes.Status404NotFound);
+
 app.Run();
 
 public partial class Program { }
