@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Artsie.DB;
 using Newtonsoft.Json;
 using System.Net;
+using System.Text;
 
 public class HelloWorldTest
 {
@@ -77,7 +78,7 @@ public class ArtEndpoint
     List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await response.Content.ReadAsStringAsync());
 
     var expectedContent = new[]{
-      new Comment{ Id=1, ArtId=1, Author="froggie", Body="Nice art!" }};
+      new Comment{ Id=1, ArtId=1, Author="froggie", Body="Nice art!", Likes = 0 }};
 
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     Assert.Equivalent(expectedContent, content);
@@ -142,7 +143,7 @@ public class CommentsEndpoint
   }
 
   [Fact(DisplayName = "404: DELETE /comments/{id}")]
-  public async Task GetArtById_404()
+  public async Task DeleteCommentById_404()
   {
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
@@ -151,6 +152,51 @@ public class CommentsEndpoint
     CommentsDB.Seed();
 
     var response = await client.DeleteAsync("/comments/999999");
+
+    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+  }
+  [Fact(DisplayName = "201: PUT /comments/{id}")]
+  public async Task UpdateCommentLikes_204()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    // Reseed comments
+    CommentsDB.Seed();
+    
+    var update = new Comment{
+      Id=1, ArtId=1, Author="froggie", Body="Nice art!", Likes = 1
+    };
+
+    var json = JsonConvert.SerializeObject(update);
+    var data = new StringContent(json, Encoding.UTF32, "application/json");
+
+    var response = await client.PutAsync("/comments", data);
+    var comments = await client.GetAsync("/art/1/comments");
+
+    List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
+
+    Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+    Assert.Equivalent(update, content[0]);
+  }
+
+  [Fact(DisplayName = "404: PUT /comments/{id}")]
+  public async Task UpdateCommentLikesById_404()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+   // Reseed comments
+    CommentsDB.Seed();
+    
+    var update = new Comment{
+      Id=99999, ArtId=1, Author="froggie", Body="Nice art!", Likes = 1
+    };
+
+    var json = JsonConvert.SerializeObject(update);
+    var data = new StringContent(json, Encoding.UTF32, "application/json");
+
+    var response = await client.PutAsync("/comments", data);
 
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }

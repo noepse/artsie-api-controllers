@@ -53,8 +53,8 @@ public class CommentsDB
     public static void Seed(){
     _comments = new List<Comment>()
    {
-     new Comment{ Id=1, ArtId=1, Author="froggie", Body="Nice art!" },
-     new Comment{ Id=2, ArtId=3, Author="froggie", Body="Cool!" },   };
+     new Comment{ Id=1, ArtId=1, Author="froggie", Body="Nice art!", Likes = 0 },
+     new Comment{ Id=2, ArtId=3, Author="froggie", Body="Cool!", Likes = 0 },   };
     }
 
 
@@ -75,17 +75,23 @@ public class CommentsDB
         return comment;
     }
 
-    public static Comment UpdateComment(Comment update)
+    public static Comment? UpdateCommentLikes(Comment update)
     {
+        var comment = _comments.SingleOrDefault(comment => comment.Id == update.Id);
+                    Console.Write(comment);
+        if (comment == null){
+            Console.Write("hi");
+            return null;
+        }
         _comments = _comments.Select(comment =>
         {
             if (comment.Id == update.Id)
             {
-                comment.Likes += update.Likes;
+                comment.Likes = update.Likes;
             }
             return comment;
         }).ToList();
-        return update;
+        return comment;
     }
 
     public static string? RemoveComment(int id)
