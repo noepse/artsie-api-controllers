@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 public record Art
 {
-    public int Id { get; set; }
-    public string? Name { get; set; }
-    public string? Artist { get; set; }
-    public string? Description { get; set; }
+    public required int Id { get; set; }
+    public required string? Name { get; set; }
+    public required string? Artist { get; set; }
+    public required string? Description { get; set; }
     public string? ImgUrl { get; set; }
 }
 
@@ -33,8 +33,8 @@ public record Comment
 {
     public int Id { get; set; }
     public int? ArtId { get; set; }
-    public string? Author { get; set; }
-    public string? Body { get; set; }
+    public required string? Author { get; set; }
+    public required string? Body { get; set; }
 
     public int? Likes { get; set; }
 
@@ -65,24 +65,31 @@ public class CommentsDB
 
     }
 
-    public static Comment CreateComment(Comment comment)
+    public static Comment CreateComment(int id, Comment comment)
     {
-        _comments.Add(comment);
-        return comment;
+        var art = ArtDB.GetArtById(id);
+        if (art != null)
+        {
+            int uniqueId = Guid.NewGuid().GetHashCode();
+            comment.Id = uniqueId;
+            comment.ArtId = id;
+            comment.Likes = 0;
+            _comments.Add(comment);
+            return comment;
+        }
+        else return null;
     }
 
-    public static Comment? UpdateCommentLikes(Comment update)
+    public static Comment? UpdateCommentLikes(int id, Comment update)
     {
-        var comment = _comments.SingleOrDefault(comment => comment.Id == update.Id);
-        Console.Write(comment);
+        var comment = _comments.SingleOrDefault(comment => comment.Id == id);
         if (comment == null)
         {
-            Console.Write("hi");
             return null;
         }
         _comments = _comments.Select(comment =>
         {
-            if (comment.Id == update.Id)
+            if (comment.Id == id)
             {
                 comment.Likes = update.Likes;
             }
@@ -105,8 +112,8 @@ public class CommentsDB
 }
 public record User
 {
-    public int Id { get; set; }
-    public string? Username { get; set; }
+    public required int Id { get; set; }
+    public required string? Username { get; set; }
 
 }
 
