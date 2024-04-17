@@ -73,10 +73,33 @@ app.MapGet("/art/{id}/comments", (int id) =>
     }).Produces<List<Comment>>(StatusCodes.Status200OK)
     .Produces(StatusCodes.Status400BadRequest)
     .Produces(StatusCodes.Status404NotFound); ;
-app.MapPost("/comments", (Comment comment) => CommentsDB.CreateComment(comment));
-app.MapPut("/comments", (Comment update) =>
+app.MapPost("/art/{id}/comments", (int id, Comment comment) =>
 {
-    var response = CommentsDB.UpdateCommentLikes(update);
+    var response = CommentsDB.CreateComment(id, comment);
+        if (response == null)
+    {
+        // Return 404 response if art is not found
+        return Results.NotFound("Art not found.");
+    }
+    else
+    {
+        // Return successful 201 response
+        return Results.Created($"/comments/{response.Id}", response);
+    }
+}).WithOpenApi(operation =>
+    {
+        operation.Summary = "Creates comment for given Art ID";
+        operation.Description = "Returns the created comment object with unique Id and Likes property initialised to zero.";
+        operation.Parameters[0].Description = "An integer that references the Art ID associated with the created comment";
+
+        return operation;
+
+    }).Accepts<Comment>("application/json")
+    .Produces<Comment>(StatusCodes.Status201Created)
+    .Produces(StatusCodes.Status400BadRequest);
+app.MapPut("/comments/{id}", (int id, Comment update) =>
+{
+    var response = CommentsDB.UpdateCommentLikes(id, update);
     if (response == null)
     {
         // Return 404 response if comment is not found
@@ -85,17 +108,19 @@ app.MapPut("/comments", (Comment update) =>
     else
     {
         // Return successful 201 response
-        return Results.Created();
+        return Results.Created($"/comments/{id}", response);
     }
 }).WithOpenApi(operation =>
     {
-        operation.Summary = "Updates likes for given comment object";
+        operation.Summary = "Updates likes for given Comment";
         operation.Description = "Returns the updated comment object.";
+        operation.Parameters[0].Description = "An integer that references the Comment ID associated with the updated comment";
+
         return operation;
 
     }).Accepts<Comment>("application/json")
     .Produces<Comment>(StatusCodes.Status201Created)
-    .Produces(StatusCodes.Status404NotFound); ;
+    .Produces(StatusCodes.Status404NotFound);
 app.MapDelete("/comments/{id}", (int id) =>
 {
     var response = CommentsDB.RemoveComment(id);
