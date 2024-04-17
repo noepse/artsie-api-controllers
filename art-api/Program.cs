@@ -72,9 +72,10 @@ app.MapGet("/art/{id}/comments", (int id) =>
 
     }).Produces<List<Comment>>(StatusCodes.Status200OK)
     .Produces(StatusCodes.Status400BadRequest)
-    .Produces(StatusCodes.Status404NotFound);;
+    .Produces(StatusCodes.Status404NotFound); ;
 app.MapPost("/comments", (Comment comment) => CommentsDB.CreateComment(comment));
-app.MapPut("/comments", (Comment update) => {
+app.MapPut("/comments", (Comment update) =>
+{
     var response = CommentsDB.UpdateCommentLikes(update);
     if (response == null)
     {
@@ -85,7 +86,8 @@ app.MapPut("/comments", (Comment update) => {
     {
         // Return successful 201 response
         return Results.Created();
-    }}).WithOpenApi(operation =>
+    }
+}).WithOpenApi(operation =>
     {
         operation.Summary = "Updates likes for given comment object";
         operation.Description = "Returns the updated comment object.";
@@ -93,8 +95,9 @@ app.MapPut("/comments", (Comment update) => {
 
     }).Accepts<Comment>("application/json")
     .Produces<Comment>(StatusCodes.Status201Created)
-    .Produces(StatusCodes.Status404NotFound);;
-app.MapDelete("/comments/{id}", (int id) => {
+    .Produces(StatusCodes.Status404NotFound); ;
+app.MapDelete("/comments/{id}", (int id) =>
+{
     var response = CommentsDB.RemoveComment(id);
     if (response == null)
     {
