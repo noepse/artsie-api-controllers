@@ -87,7 +87,16 @@ app.MapDelete("/comments/{id}", (int id) => {
         // Return successful 204 response
         return Results.NoContent();
     }
-});
+}).WithOpenApi(operation =>
+    {
+        operation.Summary = "Deletes comment for given Comment ID";
+        operation.Description = "Returns no content.";
+        operation.Parameters[0].Description = "An integer that references the Comment ID of the requested comment to delete";
+        return operation;
+
+    }).Produces(StatusCodes.Status204NoContent)
+    .Produces(StatusCodes.Status400BadRequest)
+    .Produces(StatusCodes.Status404NotFound);
 app.MapGet("/users/{id}", (int id) =>
 {
     var user = UsersDB.GetUserById(id);
