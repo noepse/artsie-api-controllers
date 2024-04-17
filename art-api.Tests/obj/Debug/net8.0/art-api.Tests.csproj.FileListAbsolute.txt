@@ -525,3 +525,4 @@
 /Users/simmi/repos/personal/artsie-api/art-api.Tests/obj/Debug/net8.0/art-api.Tests.genruntimeconfig.cache
 /Users/simmi/repos/personal/artsie-api/art-api.Tests/obj/Debug/net8.0/ref/art-api.Tests.dll
 /Users/simmi/repos/personal/artsie-api/art-api.Tests/obj/Debug/net8.0/art-api.Tests.sourcelink.json
+/Users/simmi/repos/personal/artsie-api/art-api.Tests/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll

@@ -70,6 +70,9 @@ public class ArtEndpoint
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
 
+    // Reseed comments
+    CommentsDB.Seed();
+
     var response = await client.GetAsync("/art/1/comments");
     List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await response.Content.ReadAsStringAsync());
 
@@ -95,11 +98,61 @@ public class ArtEndpoint
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
 
+// Reseed comments
+    CommentsDB.Seed();
+
     var response = await client.GetAsync("/art/999999/comments");
 
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }
 }
+
+public class CommentsEndpoint
+{
+  [Fact(DisplayName = "204: DELETE /comments/{id}")]
+  public async Task DeleteCommentById_204()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    // Reseed comments
+    CommentsDB.Seed();
+
+    var response = await client.DeleteAsync("/comments/1");
+
+    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+  }
+  [Fact(DisplayName = "400: DELETE /comments/{id}")]
+
+  public async Task DeleteCommentById_400()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    // Reseed comments
+    CommentsDB.Seed();
+
+    var response = await client.DeleteAsync("/comments/notanid");
+
+    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+  }
+
+  [Fact(DisplayName = "404: DELETE /comments/{id}")]
+  public async Task GetArtById_404()
+  {
+    await using var application = new WebApplicationFactory<Program>();
+    using var client = application.CreateClient();
+
+    // Reseed comments
+    CommentsDB.Seed();
+
+    var response = await client.DeleteAsync("/comments/999999");
+
+    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+  }
+}
+
+
 
 public class UsersEndpoint
 {
@@ -139,7 +192,7 @@ public class UsersEndpoint
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
 
-    var response = await client.GetAsync("/art/999999");
+    var response = await client.GetAsync("/users/999999");
 
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }

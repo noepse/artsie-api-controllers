@@ -75,7 +75,19 @@ app.MapGet("/art/{id}/comments", (int id) =>
     .Produces(StatusCodes.Status404NotFound);;
 app.MapPost("/comments", (Comment comment) => CommentsDB.CreateComment(comment));
 app.MapPut("/comments", (Comment comment) => CommentsDB.UpdateComment(comment));
-app.MapDelete("/comments/{id}", (int id) => CommentsDB.RemoveComment(id));
+app.MapDelete("/comments/{id}", (int id) => {
+    var response = CommentsDB.RemoveComment(id);
+    if (response == null)
+    {
+        // Return 404 response if comment is not found
+        return Results.NotFound("Comment not found.");
+    }
+    else
+    {
+        // Return successful 204 response
+        return Results.NoContent();
+    }
+});
 app.MapGet("/users/{id}", (int id) =>
 {
     var user = UsersDB.GetUserById(id);
