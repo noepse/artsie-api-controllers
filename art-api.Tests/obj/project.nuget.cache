@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ea61LP3+TtSbhU0/78FwzDjCpOT5yz0jkkdOJNw/rKvlIhiQU2oSHcMSRJ26VgMQAyjcpdfm9anQ7clKPNWHMg==",
+  "dgSpecHash": "hIULkboFeUyrVz3dHF8hp3TaRwOs8N3+1od8z1gPXs/V0m/UXv2iHfGhxDKtbM4lCIgjqwx7i4hDNTxB8b376w==",
   "success": true,
   "projectFilePath": "/Users/simmi/repos/personal/artsie-api/art-api.Tests/art-api.Tests.csproj",
   "expectedPackageFiles": [
     "/Users/simmi/.nuget/packages/coverlet.collector/6.0.0/coverlet.collector.6.0.0.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.aspnetcore.mvc.testing/8.0.4/microsoft.aspnetcore.mvc.testing.8.0.4.nupkg.sha512",
+    "/Users/simmi/.nuget/packages/microsoft.aspnetcore.openapi/8.0.4/microsoft.aspnetcore.openapi.8.0.4.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.aspnetcore.testhost/8.0.4/microsoft.aspnetcore.testhost.8.0.4.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.codecoverage/17.8.0/microsoft.codecoverage.17.8.0.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
@@ -40,7 +41,7 @@
     "/Users/simmi/.nuget/packages/microsoft.net.test.sdk/17.8.0/microsoft.net.test.sdk.17.8.0.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",
-    "/Users/simmi/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/simmi/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.testplatform.objectmodel/17.8.0/microsoft.testplatform.objectmodel.17.8.0.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.testplatform.testhost/17.8.0/microsoft.testplatform.testhost.17.8.0.nupkg.sha512",
     "/Users/simmi/.nuget/packages/microsoft.win32.primitives/4.3.0/microsoft.win32.primitives.4.3.0.nupkg.sha512",
