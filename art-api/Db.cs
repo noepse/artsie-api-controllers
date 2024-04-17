@@ -3,11 +3,6 @@ using System.Net;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 
-public class Seeder(){
-
-}
-
-
 public record Art
 {
     public int Id { get; set; }
@@ -48,10 +43,11 @@ public record Comment
 public class CommentsDB
 {
 
-    private static List<Comment> _comments = new List<Comment>(){};
+    private static List<Comment> _comments = new List<Comment>() { };
 
-    public static void Seed(){
-    _comments = new List<Comment>()
+    public static void Seed()
+    {
+        _comments = new List<Comment>()
    {
      new Comment{ Id=1, ArtId=1, Author="froggie", Body="Nice art!", Likes = 0 },
      new Comment{ Id=2, ArtId=3, Author="froggie", Body="Cool!", Likes = 0 },   };
@@ -78,8 +74,9 @@ public class CommentsDB
     public static Comment? UpdateCommentLikes(Comment update)
     {
         var comment = _comments.SingleOrDefault(comment => comment.Id == update.Id);
-                    Console.Write(comment);
-        if (comment == null){
+        Console.Write(comment);
+        if (comment == null)
+        {
             Console.Write("hi");
             return null;
         }
@@ -97,11 +94,12 @@ public class CommentsDB
     public static string? RemoveComment(int id)
     {
         var comment = _comments.SingleOrDefault(comment => comment.Id == id);
-        if (comment == null){
+        if (comment == null)
+        {
             return null;
         }
-       _comments = _comments.FindAll(comment => comment.Id != id).ToList();
-       return "Comment successfully deleted";
+        _comments = _comments.FindAll(comment => comment.Id != id).ToList();
+        return "Comment successfully deleted";
     }
 
 }

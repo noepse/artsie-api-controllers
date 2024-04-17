@@ -99,7 +99,7 @@ public class ArtEndpoint
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
 
-// Reseed comments
+    // Reseed comments
     CommentsDB.Seed();
 
     var response = await client.GetAsync("/art/999999/comments");
@@ -163,9 +163,14 @@ public class CommentsEndpoint
 
     // Reseed comments
     CommentsDB.Seed();
-    
-    var update = new Comment{
-      Id=1, ArtId=1, Author="froggie", Body="Nice art!", Likes = 1
+
+    var update = new Comment
+    {
+      Id = 1,
+      ArtId = 1,
+      Author = "froggie",
+      Body = "Nice art!",
+      Likes = 1
     };
 
     var json = JsonConvert.SerializeObject(update);
@@ -186,11 +191,16 @@ public class CommentsEndpoint
     await using var application = new WebApplicationFactory<Program>();
     using var client = application.CreateClient();
 
-   // Reseed comments
+    // Reseed comments
     CommentsDB.Seed();
-    
-    var update = new Comment{
-      Id=99999, ArtId=1, Author="froggie", Body="Nice art!", Likes = 1
+
+    var update = new Comment
+    {
+      Id = 99999,
+      ArtId = 1,
+      Author = "froggie",
+      Body = "Nice art!",
+      Likes = 1
     };
 
     var json = JsonConvert.SerializeObject(update);
