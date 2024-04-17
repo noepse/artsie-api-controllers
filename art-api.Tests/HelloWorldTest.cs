@@ -119,8 +119,12 @@ public class CommentsEndpoint
     CommentsDB.Seed();
 
     var response = await client.DeleteAsync("/comments/1");
+    var comments = await client.GetAsync("/art/1/comments");
+
+    List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
 
     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+    Assert.Empty(content);
   }
   [Fact(DisplayName = "400: DELETE /comments/{id}")]
 
