@@ -206,8 +206,6 @@ public class ArtEndpoint
     Comment? result = JsonConvert.DeserializeObject<Comment>(await response.Content.ReadAsStringAsync());
     List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
 
-        Console.WriteLine(result);
-        Console.WriteLine(content[0]);
     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     Assert.Equivalent(update.Likes, result.Likes);
     Assert.Equivalent(update.Likes, content[0].Likes);
