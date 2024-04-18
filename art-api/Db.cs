@@ -87,11 +87,12 @@ public class CommentsDB
         {
             return null;
         }
+        comment.Likes = update.Likes;
         _comments = _comments.Select(comment =>
         {
             if (comment.Id == id)
             {
-                comment.Likes = update.Likes;
+                comment = comment;
             }
             return comment;
         }).ToList();
