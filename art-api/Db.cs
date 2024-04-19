@@ -1,40 +1,6 @@
 namespace Artsie.DB;
-using System.Net;
-using System.Web;
-using Microsoft.AspNetCore.Mvc;
-
 using MongoDB.Driver;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
-public class mongoDBservice
-{
-    private readonly IMongoCollection<ArtTest> _artTest;
-
-    public mongoDBservice()
-    {
-        var connectionString = Environment.GetEnvironmentVariable("MONGODB_URI");
-        if (connectionString == null)
-        {
-            Console.WriteLine("You must set your 'MONGODB_URI' environment variable. To learn how to set it, see https://www.mongodb.com/docs/drivers/csharp/current/quick-start/#set-your-connection-string");
-            Environment.Exit(0);
-        }
-        var client = new MongoClient(connectionString);
-        var collection = client.GetDatabase("artsie").GetCollection<ArtTest>("art");
-        _artTest = collection;
-    }
-}
-
-public class ArtTest
-{
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public required string? Id { get; set; }
-    public required string? Name { get; set; }
-    public required string? Artist { get; set; }
-    public required string? Description { get; set; }
-    public string? ImgUrl { get; set; }
-}
 
 public record Art
 {
