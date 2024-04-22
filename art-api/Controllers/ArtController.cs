@@ -137,3 +137,70 @@ public class CommentsController : ControllerBase
         return NoContent();
     }
 }
+
+[ApiController]
+[Route("api/[controller]")]
+public class UsersController : ControllerBase
+{
+    private readonly ArtsieService _usersService;
+
+    public UsersController(ArtsieService usersService) =>
+        _usersService = usersService;
+
+    [HttpGet]
+    public async Task<List<User>> Get() =>
+        await _usersService.GetUsersAsync();
+
+    [HttpGet("{id:length(24)}")]
+    public async Task<ActionResult<User>> Get(string id)
+    {
+        var user = await _usersService.GetUserAsync(id);
+
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        return user;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Post(User newUser)
+    {
+        await _usersService.CreateUserAsync(newUser);
+
+        return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
+    }
+
+    [HttpPut("{id:length(24)}")]
+    public async Task<IActionResult> Update(string id, User updatedUser)
+    {
+        var user = await _usersService.GetUserAsync(id);
+
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        updatedUser.Id = user.Id;
+
+        await _usersService.UpdateUserAsync(id, updatedUser);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:length(24)}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        var user = await _usersService.GetArtAsync(id);
+
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        await _usersService.RemoveArtAsync(id);
+
+        return NoContent();
+    }
+}
