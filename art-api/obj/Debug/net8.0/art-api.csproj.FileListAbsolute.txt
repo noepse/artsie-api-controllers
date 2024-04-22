@@ -31,7 +31,6 @@
 /Users/simmi/repos/personal/art-api/obj/Debug/net8.0/art-api.MvcApplicationPartsAssemblyInfo.cs
 /Users/simmi/repos/personal/art-api/obj/Debug/net8.0/art-api.csproj.Up2Date
 /Users/simmi/repos/personal/art-api/obj/Debug/net8.0/art-api.sourcelink.json
-/Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/appsettings.Development.json
 /Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/appsettings.json
 /Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/art-api
 /Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/art-api.deps.json
@@ -78,3 +77,4 @@
 /Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/runtimes/linux/native/libmongocrypt.so
 /Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/runtimes/osx/native/libmongocrypt.dylib
 /Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/runtimes/win/native/mongocrypt.dll
+/Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/appsettings.Development.json
