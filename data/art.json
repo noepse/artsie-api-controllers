@@ -1,0 +1,20 @@
+[
+  {
+    "_id": { "$oid": "662289855f4d4b2786b31215" },
+    "artist": "Angelica Kauffman",
+    "description": "The scene portrays Cleopatra in a moment of mourning and love, as she decorates the tomb of Mark Antony, her lover and ally, who had committed suicide after being defeated by Octavian (later Emperor Augustus) in the Battle of Actium in 31 BC. Cleopatra, with a look of sorrow and determination, is shown placing a wreath on Antony's tomb, surrounded by mourners and attendants.",
+    "name": "Cleopatra decorating the Tomb of Mark Anthony"
+  },
+  {
+    "_id": { "$oid": "66261febd76faf52492be9da" },
+    "artist": "Caspar David Friedrich",
+    "name": "Wanderer above the Sea of Fog",
+    "description": "The painting depicts a solitary figure standing atop a rocky precipice, gazing out over a vast, misty landscape of mountains and fog-covered valleys. The figure, often interpreted as a representation of the Romantic wanderer or the sublime individual, stands with his back to the viewer, his face obscured, and his identity ambiguous. He is dressed in a dark overcoat and wears a wide-brimmed hat, adding to the sense of mystery and anonymity. The painting is often interpreted as a meditation on the human experience of the sublime—the overwhelming sense of awe, terror, and transcendence inspired by nature's grandeur."
+  },
+  {
+    "_id": { "$oid": "66262026d76faf52492be9db" },
+    "artist": "John Martin",
+    "description": "In this painting, Martin depicts a cataclysmic scene of divine judgment and apocalyptic destruction. The painting shows a vast landscape engulfed in chaos and devastation, with fire, brimstone, and volcanic eruptions wreaking havoc upon the earth. In the foreground, terrified figures, including women, men, and children, flee in panic from the impending doom, while others kneel in prayer or despair. The sky is darkened by swirling clouds, lightning bolts, and ominous storm clouds, heightening the sense of dread and impending doom.",
+    "name": "The Great Day of His Wrath"
+  }
+]
