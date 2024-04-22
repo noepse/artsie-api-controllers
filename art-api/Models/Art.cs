@@ -32,26 +32,25 @@ public class Comment
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public required string? Id { get; set; }
+    public string? Id { get; set; }
 
     [BsonRepresentation(BsonType.ObjectId)]
          [BsonElement("artId")]
-    public required string? ArtId { get; set; }
+    public string? ArtId { get; set; }
 
      [BsonElement("author")]
     public required string? Author { get; set; }
          [BsonElement("body")]
     public required string? Body { get; set; }
          [BsonElement("likes")]
-    public required int? Likes { get; set; }
-    public string? ImgUrl { get; set; }
+    public int? Likes { get; set; }
 }
 
 public class User
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public required string? Id { get; set; }
+    public string? Id { get; set; }
 
      [BsonElement("username")]
     public required string? Username { get; set; }

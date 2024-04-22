@@ -35,7 +35,7 @@ public class Root
 }
 public class ArtEndpoint
 {
-    [Fact(DisplayName = "200: GET /art")]
+    [Fact(DisplayName = "200: GET /api/art")]
     public async Task GetArt_200()
     {
         await using var application = new WebApplicationFactory<Program>();
@@ -148,42 +148,43 @@ public class ArtEndpoint
 
     //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     // }
-    // [Fact(DisplayName = "201: POST /art/{id}/comments")]
-    // public async Task PostComment_201()
-    // {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
+    [Fact(DisplayName = "201: POST api/art/{id}/comments")]
+    public async Task PostComment_201()
+    {
+        await using var application = new WebApplicationFactory<Program>();
+        using var client = application.CreateClient();
 
-    //     var update = new Comment
-    //     {
-    //         Author = "froggie",
-    //         Body = "Neato!",
-    //     };
+        var update = new
+        {
+            Author = "froggie",
+            Body = "Neato!",
+        };
 
-    //     var expectedOutput = new Comment
-    //     {
-    //         ArtId = 2,
-    //         Author = "froggie",
-    //         Body = "Neato!",
-    //         Likes = 0,
-    //     };
+        var expectedOutput = new[]{
+        new {
+            ArtId = "66261febd76faf52492be9da",
+            Author = "froggie",
+            Body = "Neato!",
+            Likes = 0,
+        }
+        };
 
-    //     var json = JsonConvert.SerializeObject(update);
-    //     var data = new StringContent(json, Encoding.UTF32, "application/json");
+        var json = JsonConvert.SerializeObject(update);
+        var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-    //     var response = await client.PostAsync("/art/2/comments", data);
-    //     var comments = await client.GetAsync("/art/2/comments");
+        var response = await client.PostAsync("/api/art/66261febd76faf52492be9da/comments", data);
+        var comments = await client.GetAsync("/api/art/66261febd76faf52492be9da/comments");
 
-    //     List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
+        List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
 
-    //     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-    //     Assert.Equal(content[0].ArtId, expectedOutput.ArtId);
-    //     Assert.Equal(content[0].Author, expectedOutput.Author);
-    //     Assert.Equal(content[0].Body, expectedOutput.Body);
-    //     Assert.Equal(content[0].Likes, expectedOutput.Likes);
-    //     Assert.Single(content);
-    //     Assert.IsType<int>(content[0].Id);
-    // }
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(content[0].ArtId, expectedOutput[0].ArtId);
+        Assert.Equal(content[0].Author, expectedOutput[0].Author);
+        Assert.Equal(content[0].Body, expectedOutput[0].Body);
+        Assert.Equal(content[0].Likes, expectedOutput[0].Likes);
+        Assert.Single(content);
+        Assert.IsType<string>(content[0].Id);
+    }
 
     // [Fact(DisplayName = "404: PUT /art/{id}/comments")]
     // public async Task PostComment_404()
@@ -366,7 +367,7 @@ public class UsersEndpoint
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
-    [Fact(DisplayName = "200: GET /api/users/{id}")]
+    [Fact(DisplayName = "200: GET /api/users/{username}")]
     public async Task GetUserById_200()
     {
         await using var application = new WebApplicationFactory<Program>();
@@ -378,7 +379,7 @@ public class UsersEndpoint
             Username = "froggie"
         };
 
-        var response = await client.GetAsync("/api/users/6626224bd76faf52492be9e1");
+        var response = await client.GetAsync("/api/users/froggie");
         var content = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -406,5 +407,28 @@ public class UsersEndpoint
 
     //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     //   }
+        [Fact(DisplayName = "201: POST api/users")]
+    public async Task PostComment_201()
+    {
+        await using var application = new WebApplicationFactory<Program>();
+        using var client = application.CreateClient();
+
+        var update = new
+        {
+            Username = "duckie",
+        };
+
+        var json = JsonConvert.SerializeObject(update);
+        var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await client.PostAsync("/api/users", data);
+        var users = await client.GetAsync("/api/users/duckie");
+
+        var content = JsonConvert.DeserializeObject<User>(await users.Content.ReadAsStringAsync());
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(content.Username, update.Username);
+        Assert.IsType<string>(content.Id);
+    }
 }
 
