@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("art-api.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+633e4fbe56b4be4e470c674680c0c47920b1439d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+012a4d52591ff3c225673e599b54a289a5c1c719")]
 [assembly: System.Reflection.AssemblyProductAttribute("art-api.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("art-api.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
