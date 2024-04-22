@@ -46,6 +46,9 @@ public class ArtsieService
     public async Task<List<Comment>> GetCommentsAsync() =>
 await _commentsCollection.Find(_ => true).ToListAsync();
 
+    public async Task<List<Comment>> GetCommentsOnArtAsync(string id) =>
+await _commentsCollection.Find(x => x.ArtId == id).ToListAsync();
+
     public async Task<Comment?> GetCommentAsync(string id) =>
         await _commentsCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
