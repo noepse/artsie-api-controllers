@@ -41,14 +41,21 @@ public class ArtController : ControllerBase
 
         return await _artService.GetCommentsOnArtAsync(id);
     }
-
-    [HttpPost]
-    public async Task<IActionResult> Post(Art newArt)
+        [HttpPost("{id:length(24)}/comments")]
+    public async Task<IActionResult> Post(Comment newComment, string id)
     {
-        await _artService.CreateArtAsync(newArt);
+        await _artService.CreateCommentAsync(newComment, id);
 
-        return CreatedAtAction(nameof(Get), new { id = newArt.Id }, newArt);
+        return CreatedAtAction(nameof(Get), new { id = newComment.Id }, newComment);
     }
+
+    // [HttpPost]
+    // public async Task<IActionResult> Post(Art newArt)
+    // {
+    //     await _artService.CreateArtAsync(newArt);
+
+    //     return CreatedAtAction(nameof(Get), new { id = newArt.Id }, newArt);
+    // }
 
     [HttpPut("{id:length(24)}")]
     public async Task<IActionResult> Update(string id, Art updatedArt)
@@ -109,14 +116,6 @@ public class CommentsController : ControllerBase
         return comment;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Post(Comment newComment)
-    {
-        await _commentsService.CreateCommentAsync(newComment);
-
-        return CreatedAtAction(nameof(Get), new { id = newComment.Id }, newComment);
-    }
-
     [HttpPut("{id:length(24)}")]
     public async Task<IActionResult> Update(string id, Comment updatedComment)
     {
@@ -163,10 +162,10 @@ public class UsersController : ControllerBase
     public async Task<List<User>> Get() =>
         await _usersService.GetUsersAsync();
 
-    [HttpGet("{id:length(24)}")]
-    public async Task<ActionResult<User>> Get(string id)
+    [HttpGet("{username}")]
+    public async Task<ActionResult<User>> Get(string username)
     {
-        var user = await _usersService.GetUserAsync(id);
+        var user = await _usersService.GetUserAsync(username);
 
         if (user is null)
         {

@@ -34,8 +34,8 @@ public class ArtsieService
     public async Task<Art?> GetArtAsync(string id) =>
         await _artCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-    public async Task CreateArtAsync(Art newArt) =>
-        await _artCollection.InsertOneAsync(newArt);
+    // public async Task CreateArtAsync(Art newArt) =>
+    //     await _artCollection.InsertOneAsync(newArt);
 
     public async Task UpdateArtAsync(string id, Art updatedArt) =>
         await _artCollection.ReplaceOneAsync(x => x.Id == id, updatedArt);
@@ -52,8 +52,11 @@ await _commentsCollection.Find(x => x.ArtId == id).ToListAsync();
     public async Task<Comment?> GetCommentAsync(string id) =>
         await _commentsCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-    public async Task CreateCommentAsync(Comment newComment) =>
+    public async Task CreateCommentAsync(Comment newComment, string id) {
+        newComment.ArtId = id;
+        newComment.Likes = 0;
         await _commentsCollection.InsertOneAsync(newComment);
+    }
 
     public async Task UpdateCommentAsync(string id, Comment updatedComment) =>
         await _commentsCollection.ReplaceOneAsync(x => x.Id == id, updatedComment);
@@ -64,8 +67,8 @@ await _commentsCollection.Find(x => x.ArtId == id).ToListAsync();
     public async Task<List<User>> GetUsersAsync() =>
 await _usersCollection.Find(_ => true).ToListAsync();
 
-    public async Task<User?> GetUserAsync(string id) =>
-        await _usersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+    public async Task<User?> GetUserAsync(string username) =>
+        await _usersCollection.Find(x => x.Username == username).FirstOrDefaultAsync();
 
     public async Task CreateUserAsync(User newUser) =>
         await _usersCollection.InsertOneAsync(newUser);
