@@ -1,5 +1,6 @@
 using ArtsieApi.Models;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace ArtsieApi.Services;
