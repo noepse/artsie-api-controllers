@@ -85,26 +85,26 @@ public class DatabaseFixture : IDisposable
 
         string artFilePath = Path.Combine(dataFolderPath, "art.json");
         string commentsFilePath = Path.Combine(dataFolderPath, "comments.json");
-        // string usersFilePath = Path.Combine(dataFolderPath, "users.json");
+        string usersFilePath = Path.Combine(dataFolderPath, "users.json");
 
         // Read JSON file containing test data
         string artJson = File.ReadAllText(artFilePath);
         string commentsJson = File.ReadAllText(commentsFilePath);
-        // string usersJson = File.ReadAllText(usersFilePath);
+        string usersJson = File.ReadAllText(usersFilePath);
 
         // Deserialize JSON into list of objects
         var artData = JsonConvert.DeserializeObject<List<Art>>(artJson);
         var commentsData = JsonConvert.DeserializeObject<List<Comment>>(commentsJson);
-        // var usersData = JsonConvert.DeserializeObject<List<User>>(usersJson);
+        var usersData = JsonConvert.DeserializeObject<List<User>>(usersJson);
         // Implement seeding logic to populate the database with test data
         // For example:
         var artCollection = _database.GetCollection<Art>("art");
         var commentsCollection = _database.GetCollection<Comment>("comments");
-        // var usersCollection = _database.GetCollection<User>("users");
+        var usersCollection = _database.GetCollection<User>("users");
 
         artCollection.InsertMany(artData);
         commentsCollection.InsertMany(commentsData);
-        // usersCollection.InsertMany(usersData);
+        usersCollection.InsertMany(usersData);
 
     }
 
@@ -316,43 +316,43 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
-    // [Fact(DisplayName = "200: GET /api/users")]
-    // public async Task GetUsers_200()
-    // {
-    //     await using var application = new CustomWebApplicationFactory();
-    //     using var client = application.CreateClient();
+    [Fact(DisplayName = "200: GET /api/users")]
+    public async Task GetUsers_200()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
 
-    //     var expectedContent = new[]{
-    //     new {
-    //         Id = "6626224bd76faf52492be9e1",
-    //         Username="froggie"
-    //     }
-    //     };
+        var expectedContent = new[]{
+        new {
+            Id = "6626224bd76faf52492be9e1",
+            Username="froggie"
+        }
+        };
 
-    //     var response = await client.GetAsync("/api/users");
-    //     List<User>? content = JsonConvert.DeserializeObject<List<User>>(await response.Content.ReadAsStringAsync());
+        var response = await client.GetAsync("/api/users");
+        List<User>? content = JsonConvert.DeserializeObject<List<User>>(await response.Content.ReadAsStringAsync());
 
-    //     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    //     Assert.Equivalent(expectedContent, content);
-    // }
-    // [Fact(DisplayName = "200: GET /api/users/{username}")]
-    // public async Task GetUserById_200()
-    // {
-    //     await using var application = new CustomWebApplicationFactory();
-    //     using var client = application.CreateClient();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equivalent(expectedContent, content);
+    }
+    [Fact(DisplayName = "200: GET /api/users/{username}")]
+    public async Task GetUserById_200()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
 
-    //     var expectedContent = new
-    //     {
-    //         Id = "6626224bd76faf52492be9e1",
-    //         Username = "froggie"
-    //     };
+        var expectedContent = new
+        {
+            Id = "6626224bd76faf52492be9e1",
+            Username = "froggie"
+        };
 
-    //     var response = await client.GetAsync("/api/users/froggie");
-    //     var content = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+        var response = await client.GetAsync("/api/users/froggie");
+        var content = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
 
-    //     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    //     Assert.Equivalent(expectedContent, content);
-    // }
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equivalent(expectedContent, content);
+    }
     // [Fact(DisplayName = "201: POST api/users")]
     // public async Task PostUser_201()
     // {
