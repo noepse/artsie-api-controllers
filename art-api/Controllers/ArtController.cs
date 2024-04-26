@@ -116,8 +116,8 @@ public class CommentsController : ControllerBase
         return comment;
     }
 
-    [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, Comment updatedComment)
+    [HttpPatch("{id:length(24)}")]
+    public async Task<IActionResult> Update(string id, Likes likesUpdate)
     {
         var comment = await _commentsService.GetCommentAsync(id);
 
@@ -126,11 +126,11 @@ public class CommentsController : ControllerBase
             return NotFound();
         }
 
-        updatedComment.Id = comment.Id;
+        comment.Likes = comment.Likes + likesUpdate.IncLikes;
 
-        await _commentsService.UpdateCommentAsync(id, updatedComment);
+        await _commentsService.UpdateCommentAsync(id, comment);
 
-        return NoContent();
+        return CreatedAtAction(nameof(Get), comment);
     }
 
     [HttpDelete("{id:length(24)}")]

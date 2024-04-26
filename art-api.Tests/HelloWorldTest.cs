@@ -316,6 +316,39 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
+    [Fact(DisplayName = "201: PATCH /comments/{id}")]
+    public async Task UpdateCommentLikes_201()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var update = new Likes
+        {
+            IncLikes = 1,
+        };
+
+        var expectedOutput = new Comment
+        {
+            Id = "662620f4d76faf52492be9de",
+            ArtId = "662289855f4d4b2786b31215",
+          Author = "froggie",
+            Body = "Nice art!",
+            Likes = 1,
+        };
+
+        var json = JsonConvert.SerializeObject(update);
+        var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await client.PatchAsync("/api/comments/662620f4d76faf52492be9de", data);
+        var comments = await client.GetAsync("/api/art/662289855f4d4b2786b31215/comments");
+
+        Comment? result = JsonConvert.DeserializeObject<Comment>(await response.Content.ReadAsStringAsync());
+        List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equivalent(expectedOutput, result);
+        Assert.Equivalent(expectedOutput, content[0]);
+    }
     [Fact(DisplayName = "200: GET /api/users")]
     public async Task GetUsers_200()
     {
@@ -444,32 +477,7 @@ public class ArtEndpoint
 
     //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     // }
-    //   [Fact(DisplayName = "201: PUT /comments/{id}")]
-    //   public async Task UpdateCommentLikes_201()
-    //   {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-    //     var update = new Comment
-    //     {
-    //       Author = "froggie",
-    //       Body = "Nice art!",
-    //       Likes = 1
-    //     };
-
-    //     var json = JsonConvert.SerializeObject(update);
-    //     var data = new StringContent(json, Encoding.UTF32, "application/json");
-
-    //     var response = await client.PutAsync("/comments/2", data);
-    //     var comments = await client.GetAsync("/art/3/comments");
-
-    //     Comment? result = JsonConvert.DeserializeObject<Comment>(await response.Content.ReadAsStringAsync());
-    //     List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
-
-    //     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-    //     Assert.Equivalent(update.Likes, result.Likes);
-    //     Assert.Equivalent(update.Likes, content[0].Likes);
-    //   }
+    //  
 
     //   [Fact(DisplayName = "404: PUT /comments/{id}")]
     //   public async Task UpdateCommentLikesById_404()
