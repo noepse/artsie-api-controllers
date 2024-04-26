@@ -77,6 +77,6 @@ await _usersCollection.Find(_ => true).ToListAsync();
     public async Task UpdateUserAsync(string username, User updatedUser) =>
         await _usersCollection.ReplaceOneAsync(x => x.Username == username, updatedUser);
 
-    public async Task RemoveUserAsync(string id) =>
-        await _usersCollection.DeleteOneAsync(x => x.Id == id);
+    public async Task RemoveUserAsync(string username) =>
+        await _usersCollection.DeleteOneAsync(x => x.Username == username);
 }

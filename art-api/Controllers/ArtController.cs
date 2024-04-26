@@ -200,17 +200,17 @@ public class UsersController : ControllerBase
         return CreatedAtAction(nameof(Get), user);
     }
 
-    [HttpDelete("{id:length(24)}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("{username}")]
+    public async Task<IActionResult> Delete(string username)
     {
-        var user = await _usersService.GetUserAsync(id);
+        var user = await _usersService.GetUserAsync(username);
 
         if (user is null)
         {
             return NotFound();
         }
 
-        await _usersService.RemoveUserAsync(id);
+        await _usersService.RemoveUserAsync(username);
 
         return NoContent();
     }

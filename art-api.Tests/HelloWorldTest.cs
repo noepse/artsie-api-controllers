@@ -72,6 +72,7 @@ public class DatabaseFixture : IDisposable
 
         // Connect to the MongoDB database
         var client = new MongoClient(connectionString);
+        
         _database = client.GetDatabase("artsie-test");
 
         // Seed initial data
@@ -105,7 +106,6 @@ public class DatabaseFixture : IDisposable
         artCollection.InsertMany(artData);
         commentsCollection.InsertMany(commentsData);
         usersCollection.InsertMany(usersData);
-
     }
 
     public void Dispose()
@@ -121,7 +121,6 @@ public class DatabaseFixture : IDisposable
         _container.DisposeAsync().GetAwaiter().GetResult();
 
         Environment.SetEnvironmentVariable("TEST_ENVIRONMENT", null);
-
     }
 }
 
@@ -316,7 +315,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
-    [Fact(DisplayName = "201: PATCH /comments/{id}")]
+    [Fact(DisplayName = "201: PATCH /api/comments/{id}")]
     public async Task UpdateCommentLikes_201()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
@@ -349,6 +348,20 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equivalent(expectedOutput, result);
         Assert.Equivalent(expectedOutput, content);
     }
+          [Fact(DisplayName = "204: DELETE /api/comments/{id}")]
+      public async Task DeleteCommentById_204()
+      {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var response = await client.DeleteAsync("/api/comments/662620f4d76faf52492be9de");
+        var comment = await client.GetAsync("/api/comments/662620f4d76faf52492be9de");
+
+        Comment? content = JsonConvert.DeserializeObject<Comment>(await comment.Content.ReadAsStringAsync());
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, comment.StatusCode);
+      }
     [Fact(DisplayName = "200: GET /api/users")]
     public async Task GetUsers_200()
     {
@@ -409,7 +422,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(content.Username, update.Username);
         Assert.IsType<string>(content.Id);
     }
-     [Fact(DisplayName = "201: PATCH /users/{id}")]
+     [Fact(DisplayName = "201: PATCH /users/{username}")]
     public async Task UpdateUsername_201()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
@@ -436,6 +449,20 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equivalent(expectedOutput, result);
         Assert.Equivalent(expectedOutput, updatedContent);
     }
+      [Fact(DisplayName = "204: DELETE /api/users/{username}")]
+      public async Task DeleteUserByUsername_204()
+      {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var response = await client.DeleteAsync("/api/users/birdie");
+        var comment = await client.GetAsync("/api/users/birdie");
+
+        Comment? content = JsonConvert.DeserializeObject<Comment>(await comment.Content.ReadAsStringAsync());
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, comment.StatusCode);
+      }
 }
 public class ArtEndpoint
 {
@@ -532,20 +559,7 @@ public class ArtEndpoint
 public class CommentsEndpoint
 {
 
-    //   [Fact(DisplayName = "204: DELETE /comments/{id}")]
-    //   public async Task DeleteCommentById_204()
-    //   {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
 
-    //     var response = await client.DeleteAsync("/comments/1");
-    //     var comments = await client.GetAsync("/art/1/comments");
-
-    //     List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
-
-    //     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-    //     Assert.Empty(content);
-    //   }
     //   [Fact(DisplayName = "400: DELETE /comments/{id}")]
 
     //   public async Task DeleteCommentById_400()
