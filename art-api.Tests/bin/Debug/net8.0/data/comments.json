@@ -1,16 +1,16 @@
 [
   {
-    "_id": { "$oid": "662620f4d76faf52492be9de" },
-    "artId": { "$oid": "662289855f4d4b2786b31215" },
-    "author": "froggie",
-    "body": "Nice art!",
-    "likes": { "$numberInt": "0" }
+    "Id": "662620f4d76faf52492be9de",
+    "ArtId": "662289855f4d4b2786b31215",
+    "Author": "froggie",
+    "Body": "Nice art!",
+    "Likes": 0
   },
   {
-    "_id": { "$oid": "662621fed76faf52492be9e0" },
-    "artId": { "$oid": "66262026d76faf52492be9db" },
-    "body": "Cool!",
-    "author": "froggie",
-    "likes": { "$numberInt": "0" }
+    "Id": "662621fed76faf52492be9e0",
+    "ArtId": "66262026d76faf52492be9db",
+    "Body": "Cool!",
+    "Author": "froggie",
+    "Likes": 0
   }
 ]

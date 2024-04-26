@@ -17,7 +17,7 @@ public class Art
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public required string Id { get; set; }
+    public required string? Id { get; set; }
 
      [BsonElement("name")]
     public required string? Name { get; set; }
@@ -32,11 +32,11 @@ public class Comment
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
     [BsonRepresentation(BsonType.ObjectId)]
          [BsonElement("artId")]
-    public string ArtId { get; set; }
+    public string? ArtId { get; set; }
 
      [BsonElement("author")]
     public required string? Author { get; set; }
@@ -50,7 +50,7 @@ public class User
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
      [BsonElement("username")]
     public required string? Username { get; set; }

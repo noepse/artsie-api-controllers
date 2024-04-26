@@ -84,27 +84,26 @@ public class DatabaseFixture : IDisposable
         string dataFolderPath = Path.Combine(currentDirectory, "data");
 
         string artFilePath = Path.Combine(dataFolderPath, "art.json");
-        // string commentsFilePath = Path.Combine(dataFolderPath, "comments.json");
+        string commentsFilePath = Path.Combine(dataFolderPath, "comments.json");
         // string usersFilePath = Path.Combine(dataFolderPath, "users.json");
 
         // Read JSON file containing test data
         string artJson = File.ReadAllText(artFilePath);
-        // string commentsJson = File.ReadAllText(commentsFilePath);
+        string commentsJson = File.ReadAllText(commentsFilePath);
         // string usersJson = File.ReadAllText(usersFilePath);
 
         // Deserialize JSON into list of objects
         var artData = JsonConvert.DeserializeObject<List<Art>>(artJson);
-        // var commentsData = JsonConvert.DeserializeObject<List<Comment>>(commentsJson);
+        var commentsData = JsonConvert.DeserializeObject<List<Comment>>(commentsJson);
         // var usersData = JsonConvert.DeserializeObject<List<User>>(usersJson);
         // Implement seeding logic to populate the database with test data
         // For example:
         var artCollection = _database.GetCollection<Art>("art");
-        // var commentsCollection = _database.GetCollection<Comment>("comments");
+        var commentsCollection = _database.GetCollection<Comment>("comments");
         // var usersCollection = _database.GetCollection<User>("users");
 
         artCollection.InsertMany(artData);
-
-        // commentsCollection.InsertMany(commentsData);
+        commentsCollection.InsertMany(commentsData);
         // usersCollection.InsertMany(usersData);
 
     }
@@ -215,21 +214,21 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(expectedContent.Description, content.Description);
         Assert.IsType<string>(content.Id);
     }
-    // [Fact(DisplayName = "200: GET /art/{id}/comments")]
-    // public async Task GetCommentsByArtId_200()
-    // {
-    //     await using var application = new CustomWebApplicationFactory(_fixture);
-    //     using var client = application.CreateClient();
+    [Fact(DisplayName = "200: GET /art/{id}/comments")]
+    public async Task GetCommentsByArtId_200()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
 
-    //     var response = await client.GetAsync("/api/art/662289855f4d4b2786b31215/comments");
-    //     List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await response.Content.ReadAsStringAsync());
+        var response = await client.GetAsync("/api/art/662289855f4d4b2786b31215/comments");
+        List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await response.Content.ReadAsStringAsync());
 
-    //     var expectedContent = new[]{
-    //   new Comment{ Id="662620f4d76faf52492be9de", ArtId="662289855f4d4b2786b31215", Author="froggie", Body="Nice art!", Likes = 0 }};
+        var expectedContent = new[]{
+      new Comment{ Id="662620f4d76faf52492be9de", ArtId="662289855f4d4b2786b31215", Author="froggie", Body="Nice art!", Likes = 0 }};
 
-    //     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    //     Assert.Equivalent(expectedContent, content);
-    // }
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equivalent(expectedContent, content);
+    }
     // [Fact(DisplayName = "201: POST api/art/{id}/comments")]
     // public async Task PostComment_201()
     // {
@@ -267,56 +266,56 @@ public class Endpoints : IClassFixture<DatabaseFixture>
     //     Assert.Single(content);
     //     Assert.IsType<string>(content[0].Id);
     // }
-    // [Fact(DisplayName = "200: GET /api/comments")]
-    // public async Task GetComments_200()
-    // {
-    //     await using var application = new CustomWebApplicationFactory();
-    //     using var client = application.CreateClient();
+    [Fact(DisplayName = "200: GET /api/comments")]
+    public async Task GetComments_200()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
 
-    //     var expectedContent = new[]{
-    //     new Comment{
-    //         Id = "662620f4d76faf52492be9de",
-    //         Author="froggie",
-    //         ArtId="662289855f4d4b2786b31215",
-    //         Body="Nice art!",
-    //         Likes=0,
-    //     },
-    //     new Comment{
-    //         Id = "662621fed76faf52492be9e0",
-    //         Author="froggie",
-    //         ArtId="66262026d76faf52492be9db",
-    //         Body="Cool!",
-    //         Likes=0,
-    //     }
-    //     };
+        var expectedContent = new[]{
+        new Comment{
+            Id = "662620f4d76faf52492be9de",
+            Author="froggie",
+            ArtId="662289855f4d4b2786b31215",
+            Body="Nice art!",
+            Likes=0,
+        },
+        new Comment{
+            Id = "662621fed76faf52492be9e0",
+            Author="froggie",
+            ArtId="66262026d76faf52492be9db",
+            Body="Cool!",
+            Likes=0,
+        }
+        };
 
-    //     var response = await client.GetAsync("/api/comments");
-    //     List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await response.Content.ReadAsStringAsync());
+        var response = await client.GetAsync("/api/comments");
+        List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await response.Content.ReadAsStringAsync());
 
-    //     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    //     Assert.Equivalent(expectedContent, content);
-    // }
-    // [Fact(DisplayName = "200: GET /api/comments/{id}")]
-    // public async Task GetCommentById_200()
-    // {
-    //     await using var application = new CustomWebApplicationFactory();
-    //     using var client = application.CreateClient();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equivalent(expectedContent, content);
+    }
+    [Fact(DisplayName = "200: GET /api/comments/{id}")]
+    public async Task GetCommentById_200()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
 
-    //     var expectedContent = new
-    //     {
-    //         Id = "662621fed76faf52492be9e0",
-    //         Author = "froggie",
-    //         ArtId = "66262026d76faf52492be9db",
-    //         Body = "Cool!",
-    //         Likes = 0,
-    //     };
+        var expectedContent = new
+        {
+            Id = "662621fed76faf52492be9e0",
+            Author = "froggie",
+            ArtId = "66262026d76faf52492be9db",
+            Body = "Cool!",
+            Likes = 0,
+        };
 
-    //     var response = await client.GetAsync("/api/comments/662621fed76faf52492be9e0");
-    //     var content = JsonConvert.DeserializeObject<Comment>(await response.Content.ReadAsStringAsync());
+        var response = await client.GetAsync("/api/comments/662621fed76faf52492be9e0");
+        var content = JsonConvert.DeserializeObject<Comment>(await response.Content.ReadAsStringAsync());
 
-    //     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    //     Assert.Equivalent(expectedContent, content);
-    // }
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equivalent(expectedContent, content);
+    }
     // [Fact(DisplayName = "200: GET /api/users")]
     // public async Task GetUsers_200()
     // {
