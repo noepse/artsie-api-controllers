@@ -229,43 +229,43 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
-    // [Fact(DisplayName = "201: POST api/art/{id}/comments")]
-    // public async Task PostComment_201()
-    // {
-    //     await using var application = new CustomWebApplicationFactory(_fixture);
-    //     using var client = application.CreateClient();
+    [Fact(DisplayName = "201: POST api/art/{id}/comments")]
+    public async Task PostComment_201()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
 
-    //     var update = new
-    //     {
-    //         Author = "froggie",
-    //         Body = "Neato!",
-    //     };
+        var update = new
+        {
+            Author = "froggie",
+            Body = "Neato!",
+        };
 
-    //     var expectedOutput = new[]{
-    //     new {
-    //         ArtId = "66261febd76faf52492be9da",
-    //         Author = "froggie",
-    //         Body = "Neato!",
-    //         Likes = 0,
-    //     }
-    //     };
+        var expectedOutput = new[]{
+        new {
+            ArtId = "66261febd76faf52492be9da",
+            Author = "froggie",
+            Body = "Neato!",
+            Likes = 0,
+        }
+        };
 
-    //     var json = JsonConvert.SerializeObject(update);
-    //     var data = new StringContent(json, Encoding.UTF8, "application/json");
+        var json = JsonConvert.SerializeObject(update);
+        var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-    //     var response = await client.PostAsync("/api/art/66261febd76faf52492be9da/comments", data);
-    //     var comments = await client.GetAsync("/api/art/66261febd76faf52492be9da/comments");
+        var response = await client.PostAsync("/api/art/66261febd76faf52492be9da/comments", data);
+        var comments = await client.GetAsync("/api/art/66261febd76faf52492be9da/comments");
 
-    //     List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
+        List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
 
-    //     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-    //     Assert.Equal(content[0].ArtId, expectedOutput[0].ArtId);
-    //     Assert.Equal(content[0].Author, expectedOutput[0].Author);
-    //     Assert.Equal(content[0].Body, expectedOutput[0].Body);
-    //     Assert.Equal(content[0].Likes, expectedOutput[0].Likes);
-    //     Assert.Single(content);
-    //     Assert.IsType<string>(content[0].Id);
-    // }
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(content[0].ArtId, expectedOutput[0].ArtId);
+        Assert.Equal(content[0].Author, expectedOutput[0].Author);
+        Assert.Equal(content[0].Body, expectedOutput[0].Body);
+        Assert.Equal(content[0].Likes, expectedOutput[0].Likes);
+        Assert.Single(content);
+        Assert.IsType<string>(content[0].Id);
+    }
     [Fact(DisplayName = "200: GET /api/comments")]
     public async Task GetComments_200()
     {
@@ -353,29 +353,29 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
-    // [Fact(DisplayName = "201: POST api/users")]
-    // public async Task PostUser_201()
-    // {
-    //     await using var application = new CustomWebApplicationFactory();
-    //     using var client = application.CreateClient();
+    [Fact(DisplayName = "201: POST api/users")]
+    public async Task PostUser_201()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
 
-    //     var update = new
-    //     {
-    //         Username = "duckie",
-    //     };
+        var update = new
+        {
+            Username = "duckie",
+        };
 
-    //     var json = JsonConvert.SerializeObject(update);
-    //     var data = new StringContent(json, Encoding.UTF8, "application/json");
+        var json = JsonConvert.SerializeObject(update);
+        var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-    //     var response = await client.PostAsync("/api/users", data);
-    //     var users = await client.GetAsync("/api/users/duckie");
+        var response = await client.PostAsync("/api/users", data);
+        var users = await client.GetAsync("/api/users/duckie");
 
-    //     var content = JsonConvert.DeserializeObject<User>(await users.Content.ReadAsStringAsync());
+        var content = JsonConvert.DeserializeObject<User>(await users.Content.ReadAsStringAsync());
 
-    //     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-    //     Assert.Equal(content.Username, update.Username);
-    //     Assert.IsType<string>(content.Id);
-    // }
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(content.Username, update.Username);
+        Assert.IsType<string>(content.Id);
+    }
 }
 public class ArtEndpoint
 {
