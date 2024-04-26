@@ -38,11 +38,11 @@ public class ArtsieService
     // public async Task CreateArtAsync(Art newArt) =>
     //     await _artCollection.InsertOneAsync(newArt);
 
-    public async Task UpdateArtAsync(string id, Art updatedArt) =>
-        await _artCollection.ReplaceOneAsync(x => x.Id == id, updatedArt);
+    // public async Task UpdateArtAsync(string id, Art updatedArt) =>
+    //     await _artCollection.ReplaceOneAsync(x => x.Id == id, updatedArt);
 
-    public async Task RemoveArtAsync(string id) =>
-        await _artCollection.DeleteOneAsync(x => x.Id == id);
+    // public async Task RemoveArtAsync(string id) =>
+    //     await _artCollection.DeleteOneAsync(x => x.Id == id);
 
     public async Task<List<Comment>> GetCommentsAsync() =>
 await _commentsCollection.Find(_ => true).ToListAsync();
@@ -74,8 +74,8 @@ await _usersCollection.Find(_ => true).ToListAsync();
     public async Task CreateUserAsync(User newUser) =>
         await _usersCollection.InsertOneAsync(newUser);
 
-    public async Task UpdateUserAsync(string id, User updatedUser) =>
-        await _usersCollection.ReplaceOneAsync(x => x.Id == id, updatedUser);
+    public async Task UpdateUserAsync(string username, User updatedUser) =>
+        await _usersCollection.ReplaceOneAsync(x => x.Username == username, updatedUser);
 
     public async Task RemoveUserAsync(string id) =>
         await _usersCollection.DeleteOneAsync(x => x.Id == id);

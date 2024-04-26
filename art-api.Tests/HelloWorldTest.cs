@@ -340,14 +340,14 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         var data = new StringContent(json, Encoding.UTF8, "application/json");
 
         var response = await client.PatchAsync("/api/comments/662620f4d76faf52492be9de", data);
-        var comments = await client.GetAsync("/api/art/662289855f4d4b2786b31215/comments");
+        var comment = await client.GetAsync("/api/comments/662620f4d76faf52492be9de");
 
         Comment? result = JsonConvert.DeserializeObject<Comment>(await response.Content.ReadAsStringAsync());
-        List<Comment>? content = JsonConvert.DeserializeObject<List<Comment>>(await comments.Content.ReadAsStringAsync());
+       Comment? content = JsonConvert.DeserializeObject<Comment>(await comment.Content.ReadAsStringAsync());
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.Equivalent(expectedOutput, result);
-        Assert.Equivalent(expectedOutput, content[0]);
+        Assert.Equivalent(expectedOutput, content);
     }
     [Fact(DisplayName = "200: GET /api/users")]
     public async Task GetUsers_200()
@@ -408,6 +408,33 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.Equal(content.Username, update.Username);
         Assert.IsType<string>(content.Id);
+    }
+     [Fact(DisplayName = "201: PATCH /users/{id}")]
+    public async Task UpdateUsername_201()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var update = new User
+        { Username= "toadie" };
+
+        var expectedOutput = new User
+        { Id= "6626224bd76faf52492be9e1", Username= "toadie" };
+
+        var json = JsonConvert.SerializeObject(update);
+        var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await client.PatchAsync("/api/users/froggie", data);
+        var updatedUser = await client.GetAsync("/api/users/toadie");
+        var oldUser = await client.GetAsync("/api/users/froggie");
+
+        User? result = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+        User? updatedContent = JsonConvert.DeserializeObject<User>(await updatedUser.Content.ReadAsStringAsync());
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, oldUser.StatusCode);
+        Assert.Equivalent(expectedOutput, result);
+        Assert.Equivalent(expectedOutput, updatedContent);
     }
 }
 public class ArtEndpoint
