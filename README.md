@@ -43,13 +43,13 @@ cd artsie-api
 
 ```
 
-4. Create a .gitignore file in the root folder and add the following. This ensures your connection string is not added to future commits
+4. Ensure the .gitignore file in the root folder contains the following. This secures your connection string by ensuring it is not added to future commits.
 
 ```
 art-api/appsettings.Development.json
 ```
 
-5. Ensure your MongoDB database and collection names are set up to match the names outlined in your appsettings.json and appsettings.Development.json files. If you wish to populate the database with some default data, some data has been provided in the data folder. You can easily add this data directly using the [MongoDB Atlas UI](https://www.mongodb.com/docs/atlas/atlas-ui/documents/).
+5. Ensure your MongoDB database and collection names are set up to match the names outlined in your appsettings.json and appsettings.Development.json files. If you wish to populate the database with some default data, some data has been provided in the art-api/SampleData folder. You can easily add this data to your database using the [MongoDB Atlas UI](https://www.mongodb.com/docs/atlas/atlas-ui/documents/).
 
 6. You are now ready to host the API locally. Ensure you are located in the root folder and run the following command
 
@@ -60,6 +60,9 @@ dotnet run --project art-api
 Your terminal will display the URL where you can access the API e.g. http://localhost:(yourportnumber)
 You can now view the endpoint documentation at http://localhost:(yourportnumber)/swagger
 
+### Running tests
+
+Under development - check back soon!
 
 ### Minimum requirements
 
@@ -72,7 +75,7 @@ dotnet --version
 ```
 
 ### Future plans
-- host api and documentation online
+- Host API and documentation online
 
 ### Contact
 
@@ -82,5 +85,5 @@ Feel free to reach out via any of the routes below.
 - Connect with me on [LinkedIn](https://www.linkedin.com/in/simran-amin/)
 
 ### Useful resources
-- build a .NET API with MongoDB - [tutorial](https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-mongo-app?view=aspnetcore-8.0)
-- create Swagger documentation - [article](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0)
+- Build a .NET API with MongoDB - [tutorial](https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-mongo-app?view=aspnetcore-8.0)
+- Create Swagger documentation - [article](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0)

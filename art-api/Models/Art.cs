@@ -55,3 +55,9 @@ public class User
      [BsonElement("username")]
     public required string? Username { get; set; }
 }
+public class Likes
+{
+
+     [BsonElement("inc_votes")]
+    public required int? IncLikes { get; set; }
+}

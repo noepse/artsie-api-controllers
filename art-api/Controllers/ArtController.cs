@@ -1,6 +1,7 @@
 using ArtsieApi.Models;
 using ArtsieApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace artStoreApi.Controllers;
 
@@ -17,9 +18,13 @@ public class ArtController : ControllerBase
     public async Task<List<Art>> Get() =>
         await _artService.GetArtAsync();
 
-    [HttpGet("{id:length(24)}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<Art>> Get(string id)
     {
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            return BadRequest();
+        }
         var art = await _artService.GetArtAsync(id);
 
         if (art is null)
@@ -29,7 +34,7 @@ public class ArtController : ControllerBase
 
         return art;
     }
-        [HttpGet("{id:length(24)}/comments")]
+    [HttpGet("{id:length(24)}/comments")]
     public async Task<ActionResult<List<Comment>>> GetComments(string id)
     {
         var art = await _artService.GetArtAsync(id);
@@ -41,7 +46,7 @@ public class ArtController : ControllerBase
 
         return await _artService.GetCommentsOnArtAsync(id);
     }
-        [HttpPost("{id:length(24)}/comments")]
+    [HttpPost("{id:length(24)}/comments")]
     public async Task<IActionResult> Post(Comment newComment, string id)
     {
         await _artService.CreateCommentAsync(newComment, id);
@@ -57,37 +62,37 @@ public class ArtController : ControllerBase
     //     return CreatedAtAction(nameof(Get), new { id = newArt.Id }, newArt);
     // }
 
-    [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, Art updatedArt)
-    {
-        var art = await _artService.GetArtAsync(id);
+    // [HttpPut("{id:length(24)}")]
+    // public async Task<IActionResult> Update(string id, Art updatedArt)
+    // {
+    //     var art = await _artService.GetArtAsync(id);
 
-        if (art is null)
-        {
-            return NotFound();
-        }
+    //     if (art is null)
+    //     {
+    //         return NotFound();
+    //     }
 
-        updatedArt.Id = art.Id;
+    //     updatedArt.Id = art.Id;
 
-        await _artService.UpdateArtAsync(id, updatedArt);
+    //     await _artService.UpdateArtAsync(id, updatedArt);
 
-        return NoContent();
-    }
+    //     return NoContent();
+    // }
 
-    [HttpDelete("{id:length(24)}")]
-    public async Task<IActionResult> Delete(string id)
-    {
-        var art = await _artService.GetArtAsync(id);
+    // [HttpDelete("{id:length(24)}")]
+    // public async Task<IActionResult> Delete(string id)
+    // {
+    //     var art = await _artService.GetArtAsync(id);
 
-        if (art is null)
-        {
-            return NotFound();
-        }
+    //     if (art is null)
+    //     {
+    //         return NotFound();
+    //     }
 
-        await _artService.RemoveArtAsync(id);
+    //     await _artService.RemoveArtAsync(id);
 
-        return NoContent();
-    }
+    //     return NoContent();
+    // }
 }
 
 [ApiController]
@@ -116,8 +121,8 @@ public class CommentsController : ControllerBase
         return comment;
     }
 
-    [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, Comment updatedComment)
+    [HttpPatch("{id:length(24)}")]
+    public async Task<IActionResult> Update(string id, Likes likesUpdate)
     {
         var comment = await _commentsService.GetCommentAsync(id);
 
@@ -126,11 +131,11 @@ public class CommentsController : ControllerBase
             return NotFound();
         }
 
-        updatedComment.Id = comment.Id;
+        comment.Likes = comment.Likes + likesUpdate.IncLikes;
 
-        await _commentsService.UpdateCommentAsync(id, updatedComment);
+        await _commentsService.UpdateCommentAsync(id, comment);
 
-        return NoContent();
+        return CreatedAtAction(nameof(Get), comment);
     }
 
     [HttpDelete("{id:length(24)}")]
@@ -183,34 +188,34 @@ public class UsersController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
     }
 
-    [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, User updatedUser)
+    [HttpPatch("{username}")]
+    public async Task<IActionResult> Update(string username, User updatedUser)
     {
-        var user = await _usersService.GetUserAsync(id);
+        var user = await _usersService.GetUserAsync(username);
 
         if (user is null)
         {
             return NotFound();
         }
 
-        updatedUser.Id = user.Id;
+        user.Username = updatedUser.Username;
 
-        await _usersService.UpdateUserAsync(id, updatedUser);
+        await _usersService.UpdateUserAsync(username, user);
 
-        return NoContent();
+        return CreatedAtAction(nameof(Get), user);
     }
 
-    [HttpDelete("{id:length(24)}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("{username}")]
+    public async Task<IActionResult> Delete(string username)
     {
-        var user = await _usersService.GetArtAsync(id);
+        var user = await _usersService.GetUserAsync(username);
 
         if (user is null)
         {
             return NotFound();
         }
 
-        await _usersService.RemoveArtAsync(id);
+        await _usersService.RemoveUserAsync(username);
 
         return NoContent();
     }

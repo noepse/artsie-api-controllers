@@ -51,9 +51,17 @@
               "target": "Package",
               "version": "[8.0.4, )"
             },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[17.8.0, )"
+            },
+            "Testcontainers.MongoDb": {
+              "target": "Package",
+              "version": "[3.8.0, )"
             },
             "coverlet.collector": {
               "target": "Package",
