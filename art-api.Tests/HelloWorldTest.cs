@@ -72,7 +72,7 @@ public class DatabaseFixture : IDisposable
 
         // Connect to the MongoDB database
         var client = new MongoClient(connectionString);
-        
+
         _database = client.GetDatabase("artsie-test");
 
         // Seed initial data
@@ -213,7 +213,29 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(expectedContent.Description, content.Description);
         Assert.IsType<string>(content.Id);
     }
-    [Fact(DisplayName = "200: GET /art/{id}/comments")]
+    [Fact(DisplayName = "400: GET /api/art/{id}")]
+
+    public async Task GetArtById_400()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var response = await client.GetAsync("/api/art/notanid");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+    [Fact(DisplayName = "404: GET /api/art/{id}")]
+    public async Task GetArtById_404()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var response = await client.GetAsync("/api/art/262289855f4d4b2786b31212");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact(DisplayName = "200: GET /api/art/{id}/comments")]
     public async Task GetCommentsByArtId_200()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
@@ -228,7 +250,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
-    [Fact(DisplayName = "201: POST api/art/{id}/comments")]
+    [Fact(DisplayName = "201: POST /api/art/{id}/comments")]
     public async Task PostComment_201()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
@@ -330,7 +352,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         {
             Id = "662620f4d76faf52492be9de",
             ArtId = "662289855f4d4b2786b31215",
-          Author = "froggie",
+            Author = "froggie",
             Body = "Nice art!",
             Likes = 1,
         };
@@ -342,15 +364,15 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         var comment = await client.GetAsync("/api/comments/662620f4d76faf52492be9de");
 
         Comment? result = JsonConvert.DeserializeObject<Comment>(await response.Content.ReadAsStringAsync());
-       Comment? content = JsonConvert.DeserializeObject<Comment>(await comment.Content.ReadAsStringAsync());
+        Comment? content = JsonConvert.DeserializeObject<Comment>(await comment.Content.ReadAsStringAsync());
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.Equivalent(expectedOutput, result);
         Assert.Equivalent(expectedOutput, content);
     }
-          [Fact(DisplayName = "204: DELETE /api/comments/{id}")]
-      public async Task DeleteCommentById_204()
-      {
+    [Fact(DisplayName = "204: DELETE /api/comments/{id}")]
+    public async Task DeleteCommentById_204()
+    {
         await using var application = new CustomWebApplicationFactory(_fixture);
         using var client = application.CreateClient();
 
@@ -361,7 +383,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         Assert.Equal(HttpStatusCode.NotFound, comment.StatusCode);
-      }
+    }
     [Fact(DisplayName = "200: GET /api/users")]
     public async Task GetUsers_200()
     {
@@ -422,17 +444,17 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(content.Username, update.Username);
         Assert.IsType<string>(content.Id);
     }
-     [Fact(DisplayName = "201: PATCH /users/{username}")]
+    [Fact(DisplayName = "201: PATCH /users/{username}")]
     public async Task UpdateUsername_201()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
         using var client = application.CreateClient();
 
         var update = new User
-        { Username= "toadie" };
+        { Username = "toadie" };
 
         var expectedOutput = new User
-        { Id= "6626224bd76faf52492be9e1", Username= "toadie" };
+        { Id = "6626224bd76faf52492be9e1", Username = "toadie" };
 
         var json = JsonConvert.SerializeObject(update);
         var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -449,9 +471,9 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equivalent(expectedOutput, result);
         Assert.Equivalent(expectedOutput, updatedContent);
     }
-      [Fact(DisplayName = "204: DELETE /api/users/{username}")]
-      public async Task DeleteUserByUsername_204()
-      {
+    [Fact(DisplayName = "204: DELETE /api/users/{username}")]
+    public async Task DeleteUserByUsername_204()
+    {
         await using var application = new CustomWebApplicationFactory(_fixture);
         using var client = application.CreateClient();
 
@@ -462,33 +484,11 @@ public class Endpoints : IClassFixture<DatabaseFixture>
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         Assert.Equal(HttpStatusCode.NotFound, comment.StatusCode);
-      }
+    }
 }
 public class ArtEndpoint
 {
 
-    // [Fact(DisplayName = "400: GET /art/{id}")]
-
-    // public async Task GetArtById_400()
-    // {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-    //     var response = await client.GetAsync("api/art/notanid");
-
-    //     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    // }
-
-    // [Fact(DisplayName = "404: GET /art/{id}")]
-    // public async Task GetArtById_404()
-    // {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-    //     var response = await client.GetAsync("api/art/999999");
-
-    //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    // }
 
     // [Fact(DisplayName = "400: GET /art/{id}/comments")]
     // public async Task GetCommentsByArtId_400()

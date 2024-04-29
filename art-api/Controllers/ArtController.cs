@@ -1,6 +1,7 @@
 using ArtsieApi.Models;
 using ArtsieApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace artStoreApi.Controllers;
 
@@ -17,9 +18,13 @@ public class ArtController : ControllerBase
     public async Task<List<Art>> Get() =>
         await _artService.GetArtAsync();
 
-    [HttpGet("{id:length(24)}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<Art>> Get(string id)
     {
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            return BadRequest();
+        }
         var art = await _artService.GetArtAsync(id);
 
         if (art is null)
@@ -29,7 +34,7 @@ public class ArtController : ControllerBase
 
         return art;
     }
-        [HttpGet("{id:length(24)}/comments")]
+    [HttpGet("{id:length(24)}/comments")]
     public async Task<ActionResult<List<Comment>>> GetComments(string id)
     {
         var art = await _artService.GetArtAsync(id);
@@ -41,7 +46,7 @@ public class ArtController : ControllerBase
 
         return await _artService.GetCommentsOnArtAsync(id);
     }
-        [HttpPost("{id:length(24)}/comments")]
+    [HttpPost("{id:length(24)}/comments")]
     public async Task<IActionResult> Post(Comment newComment, string id)
     {
         await _artService.CreateCommentAsync(newComment, id);
