@@ -443,6 +443,17 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
+      [Fact(DisplayName = "404: GET /api/users/{username}")]
+      public async Task GetUserByUsername_404()
+      {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var response = await client.GetAsync("/users/999999");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+      }
+
     [Fact(DisplayName = "201: POST api/users")]
     public async Task PostUser_201()
     {
@@ -586,28 +597,6 @@ public class CommentsEndpoint
 public class UsersEndpoint
 {
 
-    //   [Fact(DisplayName = "400: GET /users/{id}")]
-
-    //   public async Task GetUserById_400()
-    //   {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-    //     var response = await client.GetAsync("/users/notanid");
-
-    //     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    //   }
-
-    //   [Fact(DisplayName = "404: GET /users/{id}")]
-    //   public async Task GetArtById_404()
-    //   {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-    //     var response = await client.GetAsync("/users/999999");
-
-    //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    //   }
-
+   
 }
 
