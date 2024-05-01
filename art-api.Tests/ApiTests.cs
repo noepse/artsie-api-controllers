@@ -337,7 +337,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
-        [Fact(DisplayName = "400: GET /api/art/{id}/comments")]
+    [Fact(DisplayName = "400: GET /api/art/{id}/comments")]
     public async Task GetCommentsByArtId_400()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
@@ -358,7 +358,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-     
+
     [Fact(DisplayName = "201: PATCH /api/comments/{id}")]
     public async Task UpdateCommentLikes_201()
     {
@@ -443,16 +443,16 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
-      [Fact(DisplayName = "404: GET /api/users/{username}")]
-      public async Task GetUserByUsername_404()
-      {
+    [Fact(DisplayName = "404: GET /api/users/{username}")]
+    public async Task GetUserByUsername_404()
+    {
         await using var application = new CustomWebApplicationFactory(_fixture);
         using var client = application.CreateClient();
 
-        var response = await client.GetAsync("/users/999999");
+        var response = await client.GetAsync("/api/users/999999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-      }
+    }
 
     [Fact(DisplayName = "201: POST api/users")]
     public async Task PostUser_201()
@@ -518,6 +518,28 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         Assert.Equal(HttpStatusCode.NotFound, comment.StatusCode);
     }
+    [Fact(DisplayName = "400: DELETE /api/comments/{id}")]
+
+    public async Task DeleteCommentById_400()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var response = await client.DeleteAsync("/api/comments/notanid");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact(DisplayName = "404: DELETE /api/comments/{id}")]
+    public async Task DeleteCommentById_404()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var response = await client.DeleteAsync("/api/comments/862621fed76faf52492be9e2");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
 }
 public class ArtEndpoint
 {
@@ -564,39 +586,3 @@ public class ArtEndpoint
     //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     //   }
 }
-
-public class CommentsEndpoint
-{
-
-
-    //   [Fact(DisplayName = "400: DELETE /comments/{id}")]
-
-    //   public async Task DeleteCommentById_400()
-    //   {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-    //     var response = await client.DeleteAsync("/comments/notanid");
-
-    //     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    //   }
-
-    //   [Fact(DisplayName = "404: DELETE /comments/{id}")]
-    //   public async Task DeleteCommentById_404()
-    //   {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-    //     var response = await client.DeleteAsync("/comments/999999");
-
-    //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    //   }
-
-}
-
-public class UsersEndpoint
-{
-
-   
-}
-

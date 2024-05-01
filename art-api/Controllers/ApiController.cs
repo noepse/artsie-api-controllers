@@ -37,7 +37,8 @@ public class ArtController : ControllerBase
     [HttpGet("{id}/comments")]
     public async Task<ActionResult<List<Comment>>> GetComments(string id)
     {
-        if (!ObjectId.TryParse(id, out ObjectId objectId)){
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+        {
             return BadRequest();
         }
 
@@ -142,9 +143,13 @@ public class CommentsController : ControllerBase
         return CreatedAtAction(nameof(Get), comment);
     }
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            return BadRequest();
+        }
         var comment = await _commentsService.GetCommentAsync(id);
 
         if (comment is null)
