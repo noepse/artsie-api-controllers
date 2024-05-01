@@ -587,3 +587,6 @@
 /Users/simmi/repos/personal/artsie-api/art-api.Tests/bin/Debug/net8.0/data/art.json
 /Users/simmi/repos/personal/artsie-api/art-api.Tests/bin/Debug/net8.0/data/comments.json
 /Users/simmi/repos/personal/artsie-api/art-api.Tests/bin/Debug/net8.0/data/users.json
+/Users/simmi/repos/personal/artsie-api/art-api.Tests/bin/Debug/net8.0/SampleData/Art.json
+/Users/simmi/repos/personal/artsie-api/art-api.Tests/bin/Debug/net8.0/SampleData/Comments.json
+/Users/simmi/repos/personal/artsie-api/art-api.Tests/bin/Debug/net8.0/SampleData/Users.json

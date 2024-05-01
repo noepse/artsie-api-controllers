@@ -34,9 +34,14 @@ public class ArtController : ControllerBase
 
         return art;
     }
-    [HttpGet("{id:length(24)}/comments")]
+    [HttpGet("{id}/comments")]
     public async Task<ActionResult<List<Comment>>> GetComments(string id)
     {
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            return BadRequest();
+        }
+
         var art = await _artService.GetArtAsync(id);
 
         if (art is null)
@@ -46,9 +51,21 @@ public class ArtController : ControllerBase
 
         return await _artService.GetCommentsOnArtAsync(id);
     }
-    [HttpPost("{id:length(24)}/comments")]
+    [HttpPost("{id}/comments")]
     public async Task<IActionResult> Post(Comment newComment, string id)
     {
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            return BadRequest();
+        }
+
+        var art = await _artService.GetArtAsync(id);
+
+        if (art is null)
+        {
+            return NotFound();
+        }
+
         await _artService.CreateCommentAsync(newComment, id);
 
         return CreatedAtAction(nameof(Get), new { id = newComment.Id }, newComment);
@@ -138,9 +155,13 @@ public class CommentsController : ControllerBase
         return CreatedAtAction(nameof(Get), comment);
     }
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            return BadRequest();
+        }
         var comment = await _commentsService.GetCommentAsync(id);
 
         if (comment is null)
