@@ -392,6 +392,42 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equivalent(expectedOutput, result);
         Assert.Equivalent(expectedOutput, content);
     }
+          [Fact(DisplayName = "400: PATCH /api/comments/{id}")]
+      public async Task UpdateCommentLikesById_400()
+      {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var update = new 
+        {
+            IncLikes = "notanumber",
+        };
+
+        var json = JsonConvert.SerializeObject(update);
+        var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await client.PatchAsync("/api/comments/862621fed76faf52492be9e2", data);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+      }
+      [Fact(DisplayName = "404: PATCH /api/comments/{id}")]
+      public async Task UpdateCommentLikesById_404()
+      {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var update = new Likes
+        {
+            IncLikes = 1,
+        };
+
+        var json = JsonConvert.SerializeObject(update);
+        var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await client.PatchAsync("/api/comments/862621fed76faf52492be9e2", data);
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+      }
     [Fact(DisplayName = "204: DELETE /api/comments/{id}")]
     public async Task DeleteCommentById_204()
     {
@@ -544,7 +580,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
 public class ArtEndpoint
 {
 
-    // [Fact(DisplayName = "404: PUT /art/{id}/comments")]
+    // [Fact(DisplayName = "404: POST /art/{id}/comments")]
     // public async Task PostComment_404()
     // {
     //     await using var application = new WebApplicationFactory<Program>();
@@ -564,25 +600,4 @@ public class ArtEndpoint
     //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     // }
 
-    //   [Fact(DisplayName = "404: PUT /comments/{id}")]
-    //   public async Task UpdateCommentLikesById_404()
-    //   {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-
-    //     var update = new Comment
-    //     {
-    //       Author = "froggie",
-    //       Body = "Nice art!",
-    //       Likes = 1
-    //     };
-
-    //     var json = JsonConvert.SerializeObject(update);
-    //     var data = new StringContent(json, Encoding.UTF32, "application/json");
-
-    //     var response = await client.PutAsync("/comments/9999", data);
-
-    //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    //   }
 }
