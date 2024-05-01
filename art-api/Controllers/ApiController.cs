@@ -34,9 +34,13 @@ public class ArtController : ControllerBase
 
         return art;
     }
-    [HttpGet("{id:length(24)}/comments")]
+    [HttpGet("{id}/comments")]
     public async Task<ActionResult<List<Comment>>> GetComments(string id)
     {
+        if (!ObjectId.TryParse(id, out ObjectId objectId)){
+            return BadRequest();
+        }
+
         var art = await _artService.GetArtAsync(id);
 
         if (art is null)

@@ -1,0 +1,23 @@
+[
+  {
+    "_id": { "$oid": "362620f4d76faf52492be9de" },
+    "artId": { "$oid": "662289855f4d4b2786b31215" },
+    "author": "mellowcello",
+    "body": "Woah!",
+    "likes": { "$numberInt": "2" }
+  },
+  {
+    "_id": { "$oid": "262621fed76faf52492be9e8" },
+    "artId": { "$oid": "66262026d76faf52492be9db" },
+    "body": "This is pretty!",
+    "author": "astuteflute",
+    "likes": { "$numberInt": "8" }
+  },
+  {
+    "_id": { "$oid": "262621fed76faf52492be9e8" },
+    "artId": { "$oid": "66262026d76faf52492be9db" },
+    "body": "How did they paint this?",
+    "author": "mellowcello",
+    "likes": { "$numberInt": "1" }
+  }
+]

@@ -337,6 +337,28 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
+        [Fact(DisplayName = "400: GET /api/art/{id}/comments")]
+    public async Task GetCommentsByArtId_400()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var response = await client.GetAsync("/api/art/notanid/comments");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+    [Fact(DisplayName = "404: GET /api/art/{id}/comments")]
+    public async Task GetCommentsByArtId_404()
+    {
+        await using var application = new CustomWebApplicationFactory(_fixture);
+        using var client = application.CreateClient();
+
+        var response = await client.GetAsync("/api/art/72261febd76faf52492be9dc/comments");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+     
     [Fact(DisplayName = "201: PATCH /api/comments/{id}")]
     public async Task UpdateCommentLikes_201()
     {
@@ -489,29 +511,6 @@ public class Endpoints : IClassFixture<DatabaseFixture>
 public class ArtEndpoint
 {
 
-
-    // [Fact(DisplayName = "400: GET /art/{id}/comments")]
-    // public async Task GetCommentsByArtId_400()
-    // {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-    //     var response = await client.GetAsync("api/art/notanid/comments");
-
-    //     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    // }
-    // [Fact(DisplayName = "404: GET /art/{id}/comments")]
-    // public async Task GetCommentsByArtId_404()
-    // {
-    //     await using var application = new WebApplicationFactory<Program>();
-    //     using var client = application.CreateClient();
-
-    //     var response = await client.GetAsync("api/art/999999/comments");
-
-    //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    // }
-
-
     // [Fact(DisplayName = "404: PUT /art/{id}/comments")]
     // public async Task PostComment_404()
     // {
@@ -531,7 +530,6 @@ public class ArtEndpoint
 
     //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     // }
-    //  
 
     //   [Fact(DisplayName = "404: PUT /comments/{id}")]
     //   public async Task UpdateCommentLikesById_404()
