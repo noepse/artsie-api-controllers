@@ -214,7 +214,6 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.IsType<string>(content.Id);
     }
     [Fact(DisplayName = "400: GET /api/art/{id}")]
-
     public async Task GetArtById_400()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
@@ -250,6 +249,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
+
     [Fact(DisplayName = "201: POST /api/art/{id}/comments")]
     public async Task PostComment_201()
     {
@@ -306,7 +306,7 @@ public class Endpoints : IClassFixture<DatabaseFixture>
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
-        [Fact(DisplayName = "404: POST /api/art/{id}/comments")]
+    [Fact(DisplayName = "404: POST /api/art/{id}/comments")]
     public async Task PostComment_404()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
@@ -376,28 +376,26 @@ public class Endpoints : IClassFixture<DatabaseFixture>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(expectedContent, content);
     }
-    [Fact(DisplayName = "400: GET /api/art/{id}/comments")]
+        [Fact(DisplayName = "400: GET /api/comments/{id}")]
     public async Task GetCommentsByArtId_400()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
         using var client = application.CreateClient();
 
-        var response = await client.GetAsync("/api/art/notanid/comments");
+        var response = await client.GetAsync("/api/comments/notanid");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
-    [Fact(DisplayName = "404: GET /api/art/{id}/comments")]
+    [Fact(DisplayName = "404: GET /api/comments/{id}")]
     public async Task GetCommentsByArtId_404()
     {
         await using var application = new CustomWebApplicationFactory(_fixture);
         using var client = application.CreateClient();
 
-        var response = await client.GetAsync("/api/art/72261febd76faf52492be9dc/comments");
+        var response = await client.GetAsync("/api/comments/72261febd76faf52492be9dc");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
-
-
     [Fact(DisplayName = "201: PATCH /api/comments/{id}")]
     public async Task UpdateCommentLikes_201()
     {
