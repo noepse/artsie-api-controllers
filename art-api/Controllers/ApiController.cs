@@ -125,9 +125,14 @@ public class CommentsController : ControllerBase
     public async Task<List<Comment>> Get() =>
         await _commentsService.GetCommentsAsync();
 
-    [HttpGet("{id:length(24)}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<Comment>> Get(string id)
     {
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            return BadRequest();
+        }
+
         var comment = await _commentsService.GetCommentAsync(id);
 
         if (comment is null)
