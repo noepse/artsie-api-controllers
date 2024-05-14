@@ -2,6 +2,10 @@
 
 An API that returns data from MongoDB on art, associated comments and users.
 
+Access API [Here](https://artsie-api.onrender.com/)
+Endpoint documentation coming soon...
+Hint: For now, try endpoints such as /api/art, /api/users, /api/comments
+
 ### Host this api locally
 1. Clone this repo
 
@@ -75,7 +79,7 @@ dotnet --version
 ```
 
 ### Future plans
-- Host API and documentation online
+- Host documentation online
 
 ### Contact
 
