@@ -15,8 +15,13 @@ public class ArtsieService
     public ArtsieService(
         IOptions<ArtsieDatabaseSettings> artsieDatabaseSettings)
     {
-        var mongoClient = new MongoClient(
-            artsieDatabaseSettings.Value.ConnectionString);
+        var connectionString = artsieDatabaseSettings.Value.ConnectionString;
+
+        if(Environment.GetEnvironmentVariable("PRODUCTION_ENVIRONMENT") == "true"){
+            connectionString = Environment.GetEnvironmentVariable("MONGODB_CONNECTION_STRING");
+        }
+
+        var mongoClient = new MongoClient(connectionString);
 
         var mongoDatabase = mongoClient.GetDatabase(
             artsieDatabaseSettings.Value.DatabaseName);
