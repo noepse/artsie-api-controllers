@@ -3,8 +3,8 @@
 An API that returns data from MongoDB on art, associated comments and users.
 
 Access API [Here](https://artsie-api.onrender.com/)
-Endpoint documentation coming soon...
-Hint: For now, try endpoints such as /api/art, /api/users, /api/comments
+View Documentation [Here](https://artsie-api.onrender.com/swagger/v1/swagger.json)
+Hint: Try endpoints such as /api/art, /api/users, /api/comments
 
 ### Host this api locally
 1. Clone this repo
@@ -79,7 +79,7 @@ dotnet --version
 ```
 
 ### Future plans
-- Host documentation online
+- Generate Swagger documentation
 
 ### Contact
 
