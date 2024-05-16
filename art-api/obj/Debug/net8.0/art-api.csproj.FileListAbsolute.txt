@@ -81,3 +81,5 @@
 /Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/SampleData/Art.json
 /Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/SampleData/Comments.json
 /Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/SampleData/Users.json
+/Users/simmi/repos/personal/artsie-api/art-api/bin/Debug/net8.0/art-api.xml
+/Users/simmi/repos/personal/artsie-api/art-api/obj/Debug/net8.0/art-api.xml

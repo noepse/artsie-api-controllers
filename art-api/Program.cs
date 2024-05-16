@@ -3,8 +3,6 @@ using ArtsieApi.Models;
 using ArtsieApi.Services;
 using Utils;
 
-
-
 public partial class Program
 {
     static void Main(string[] args)
@@ -31,14 +29,15 @@ public partial class Program
 
         var app = builder.Build();
 
-        app.UseHttpsRedirection();
-        app.MapControllers();
-
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
+            app.UseStaticFiles();
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "Art API V1");
         });
+
+        app.UseHttpsRedirection();
+        app.MapControllers();
 
         app.MapGet("/", () => "Hello World!")
         .WithOpenApi(operation =>
